@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taos Fseha — Dev Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root { --transition-speed: 0.45s; }
+
+  [data-theme="dark"] {
+    --bg-primary: #030304; --bg-secondary: #050507;
+    --bg-card: rgba(255,255,255,0.03); --bg-card-hover: rgba(255,255,255,0.06);
+    --bg-code: rgba(255,255,255,0.05); --bg-nav: rgba(3,3,4,0.85);
+    --text-primary: #FFFFFF; --text-secondary: #94A3B8; --text-tertiary: #64748B;
+    --accent: #6366F1; --accent-light: #818CF8; --accent-glow: rgba(99,102,241,0.3);
+    --border: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.15);
+    --progress-bar: #6366F1; --copy-flash: #10B981;
+    --tag-bg: rgba(99,102,241,0.15); --tag-text: #818CF8;
+    --scrollbar-track: #050507; --scrollbar-thumb: #333;
+    --shadow-card: 0 8px 32px rgba(0,0,0,0.4);
+    --shadow-card-hover: 0 20px 60px rgba(0,0,0,0.6);
+  }
+
+  [data-theme="light"] {
+    --bg-primary: #F8FAFC; --bg-secondary: #F1F5F9;
+    --bg-card: rgba(255,255,255,0.8); --bg-card-hover: rgba(255,255,255,1);
+    --bg-code: #F1F5F9; --bg-nav: rgba(248,250,252,0.9);
+    --text-primary: #0F172A; --text-secondary: #475569; --text-tertiary: #94A3B8;
+    --accent: #4F46E5; --accent-light: #6366F1; --accent-glow: rgba(79,70,229,0.2);
+    --border: rgba(0,0,0,0.08); --border-hover: rgba(0,0,0,0.15);
+    --progress-bar: #4F46E5; --copy-flash: #059669;
+    --tag-bg: rgba(79,70,229,0.1); --tag-text: #4F46E5;
+    --scrollbar-track: #F1F5F9; --scrollbar-thumb: #CBD5E1;
+    --shadow-card: 0 8px 32px rgba(0,0,0,0.08);
+    --shadow-card-hover: 0 20px 60px rgba(0,0,0,0.15);
+  }
+
+  [data-theme="terminal"] {
+    --bg-primary: #0a0a0a; --bg-secondary: #0d0d0d;
+    --bg-card: rgba(0,255,65,0.03); --bg-card-hover: rgba(0,255,65,0.06);
+    --bg-code: rgba(0,255,65,0.05); --bg-nav: rgba(10,10,10,0.9);
+    --text-primary: #00ff41; --text-secondary: #00cc33; --text-tertiary: #009926;
+    --accent: #00ff41; --accent-light: #33ff66; --accent-glow: rgba(0,255,65,0.25);
+    --border: rgba(0,255,65,0.15); --border-hover: rgba(0,255,65,0.3);
+    --progress-bar: #00ff41; --copy-flash: #00ff41;
+    --tag-bg: rgba(0,255,65,0.1); --tag-text: #00ff41;
+    --scrollbar-track: #0a0a0a; --scrollbar-thumb: #003300;
+    --shadow-card: 0 8px 32px rgba(0,255,65,0.05);
+    --shadow-card-hover: 0 20px 60px rgba(0,255,65,0.1);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
+  body {
+    font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary);
+    transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+    line-height: 1.6; overflow-x: hidden;
+  }
+  ::selection { background: var(--accent); color: #fff; }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+  ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+
+  #progress-bar {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: var(--progress-bar); z-index: 9999;
+    transition: width 0.1s linear, background var(--transition-speed) ease;
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  nav {
+    position: fixed; top: 3px; left: 0; right: 0; height: 64px;
+    background: var(--bg-nav); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); z-index: 1000;
+    transition: background var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto; height: 100%;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 600;
+    color: var(--text-primary); text-decoration: none;
+    transition: color var(--transition-speed) ease;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-logo .cursor-dot {
+    display: inline-block; width: 8px; height: 8px;
+    background: var(--accent); border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)} }
+  .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color .2s; letter-spacing: .02em; }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+
+  .theme-toggle {
+    width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--bg-card); cursor: pointer; display: flex; align-items: center;
+    justify-content: center; transition: all .3s ease; overflow: hidden;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: scale(1.05); }
+  .theme-toggle .icon-wrap {
+    transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .theme-toggle .icon-wrap.exit-up { transform: translateY(-30px) rotate(90deg); opacity: 0; }
+  .theme-toggle .icon-wrap.enter-from-below { transform: translateY(30px) rotate(-90deg); opacity: 0; }
+  .theme-toggle .icon-wrap.active { transform: translateY(0) rotate(0deg); opacity: 1; }
+  .theme-toggle .iconify { font-size: 20px; color: var(--text-primary); transition: color var(--transition-speed) ease; }
+
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 120px 24px 80px; position: relative; overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute; width: 600px; height: 600px; border-radius: 50%;
+    background: var(--accent-glow); filter: blur(120px); opacity: .3;
+    top: 10%; left: 50%; transform: translateX(-50%); pointer-events: none;
+    transition: background var(--transition-speed) ease;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border);
+    background: var(--bg-card); font-size: 12px; font-weight: 500;
+    color: var(--text-secondary); margin-bottom: 32px;
+    transition: all var(--transition-speed) ease;
+  }
+  .hero-badge .status-dot { width: 6px; height: 6px; background: #10B981; border-radius: 50%; position: relative; }
+  .hero-badge .status-dot::after {
+    content: ''; position: absolute; inset: -3px; border-radius: 50%;
+    background: #10B981; animation: ping 1.5s cubic-bezier(0,0,.2,1) infinite; opacity: 0;
+  }
+  @keyframes ping { 75%,100%{transform:scale(2.5);opacity:0} }
+
+  .hero h1 {
+    font-size: clamp(36px,7vw,72px); font-weight: 600; line-height: 1.1;
+    letter-spacing: -.03em; text-align: center; max-width: 800px; margin-bottom: 24px;
+  }
+  .typewriter-text { color: var(--accent); }
+  .typewriter-cursor {
+    display: inline-block; width: 3px; height: .85em; background: var(--accent);
+    margin-left: 4px; vertical-align: text-bottom; animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+
+  .hero-sub {
+    font-size: 18px; font-weight: 300; color: var(--text-secondary);
+    text-align: center; max-width: 600px; line-height: 1.7; margin-bottom: 40px;
+  }
+  .hero-techs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 48px; }
+  .hero-tech-tag {
+    padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 500;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--tag-bg); color: var(--tag-text); transition: all var(--transition-speed) ease;
+  }
+  .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;
+    background: var(--text-primary); color: var(--bg-primary); border: none;
+    border-radius: 10px; font-size: 14px; font-weight: 500;
+    font-family: 'Inter', sans-serif; cursor: pointer; transition: all .3s ease; text-decoration: none;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;
+    background: transparent; color: var(--text-primary); border: 1px solid var(--border);
+    border-radius: 10px; font-size: 14px; font-weight: 500;
+    font-family: 'Inter', sans-serif; cursor: pointer; transition: all .3s ease; text-decoration: none;
+  }
+  .btn-secondary:hover { border-color: var(--border-hover); background: var(--bg-card); transform: translateY(-2px); }
+
+  .scroll-indicator {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: var(--text-tertiary); font-size: 11px; letter-spacing: .1em;
+    text-transform: uppercase; animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)} }
+
+  .github-bar {
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: var(--bg-secondary); transition: all var(--transition-speed) ease;
+  }
+  .github-bar-inner {
+    max-width: 1280px; margin: 0 auto; padding: 16px 24px;
+    display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap;
+  }
+  .gh-stat { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+  .gh-stat .iconify { font-size: 16px; color: var(--text-primary); }
+  .gh-stat .gh-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--text-primary); }
+  .gh-stat .gh-label { color: var(--text-tertiary); font-size: 12px; }
+  .gh-link { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--accent); text-decoration: none; }
+  .gh-link:hover { opacity: .8; }
+
+  .section { padding: 96px 24px; max-width: 1280px; margin: 0 auto; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 11px;
+    font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px; font-family: 'JetBrains Mono', monospace;
+  }
+  .section-label::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+  .section-title { font-size: clamp(28px,4vw,40px); font-weight: 600; letter-spacing: -.02em; margin-bottom: 16px; }
+  .section-desc { font-size: 16px; font-weight: 300; color: var(--text-secondary); max-width: 600px; line-height: 1.7; margin-bottom: 48px; }
+
+  .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; }
+
+  .article-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+    overflow: hidden; cursor: pointer;
+    transition: transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease, border-color .3s ease, background var(--transition-speed) ease;
+    box-shadow: var(--shadow-card);
+  }
+  .article-card:hover { transform: translateY(-12px); box-shadow: var(--shadow-card-hover); border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .article-card-img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform .5s ease; }
+  .article-card:hover .article-card-img { transform: scale(1.05); }
+  .article-card-img-wrap { overflow: hidden; position: relative; }
+  .article-card-img-wrap::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+    background: linear-gradient(transparent, var(--bg-card)); pointer-events: none;
+  }
+  .article-card-body { padding: 20px 24px 24px; }
+  .article-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .article-card-tag {
+    font-size: 11px; font-weight: 500; font-family: 'JetBrains Mono', monospace;
+    padding: 3px 10px; border-radius: 6px; background: var(--tag-bg); color: var(--tag-text);
+  }
+  .article-card-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+  .article-card-excerpt {
+    font-size: 14px; font-weight: 300; color: var(--text-secondary); line-height: 1.6;
+    margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .article-card-meta { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-tertiary); }
+  .article-card-meta .read-time { display: flex; align-items: center; gap: 4px; }
+  .article-card-arrow { opacity: 0; transform: translateX(-8px); transition: all .3s ease; color: var(--accent); }
+  .article-card:hover .article-card-arrow { opacity: 1; transform: translateX(0); }
+
+  .featured-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+    overflow: hidden; margin-bottom: 48px; display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 380px; cursor: pointer;
+    transition: transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease, border-color .3s ease, background var(--transition-speed) ease;
+    box-shadow: var(--shadow-card);
+  }
+  .featured-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-card-hover); border-color: var(--border-hover); }
+  .featured-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .featured-card:hover .featured-card-img { transform: scale(1.05); }
+  .featured-card-img-wrap { overflow: hidden; }
+  .featured-card-body { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+  .featured-label { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); font-family: 'JetBrains Mono', monospace; margin-bottom: 16px; }
+  .featured-card-title { font-size: 28px; font-weight: 600; line-height: 1.2; margin-bottom: 16px; letter-spacing: -.01em; }
+  .featured-card-excerpt { font-size: 15px; font-weight: 300; color: var(--text-secondary); line-height: 1.7; margin-bottom: 24px; }
+
+  @media (max-width: 768px) {
+    .featured-card { grid-template-columns: 1fr; }
+    .featured-card-img-wrap { max-height: 220px; }
+    .featured-card-body { padding: 24px; }
+    .articles-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+
+  /* ═══════════════ ARTICLE DETAIL ═══════════════ */
+  .article-detail { display: none; max-width: 760px; margin: 0 auto; padding: 120px 24px 96px; }
+  .article-detail.active { display: block; }
+  .article-detail .back-btn {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 13px;
+    color: var(--text-secondary); text-decoration: none; margin-bottom: 32px;
+    cursor: pointer; transition: color .2s; background: none; border: none;
+    font-family: 'Inter', sans-serif;
+  }
+  .article-detail .back-btn:hover { color: var(--text-primary); }
+  .article-detail h1 { font-size: clamp(28px,5vw,42px); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; margin-bottom: 16px; }
+  .article-detail .detail-meta {
+    display: flex; align-items: center; gap: 16px; color: var(--text-tertiary);
+    font-size: 13px; margin-bottom: 40px; padding-bottom: 32px;
+    border-bottom: 1px solid var(--border); flex-wrap: wrap;
+  }
+  .article-detail .detail-content { font-size: 16px; font-weight: 300; line-height: 1.8; color: var(--text-secondary); }
+  .article-detail .detail-content h2 { font-size: 24px; font-weight: 600; color: var(--text-primary); margin: 40px 0 16px; }
+  .article-detail .detail-content h3 { font-size: 20px; font-weight: 600; color: var(--text-primary); margin: 32px 0 12px; }
+  .article-detail .detail-content p { margin-bottom: 20px; }
+  .article-detail .detail-content ul, .article-detail .detail-content ol { margin: 16px 0 24px 24px; }
+  .article-detail .detail-content li { margin-bottom: 8px; }
+  .article-detail .detail-content strong { color: var(--text-primary); font-weight: 600; }
+  .article-detail .detail-content em { font-style: italic; }
+  .article-detail .detail-content a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  .article-detail .detail-content blockquote {
+    border-left: 3px solid var(--accent); padding: 12px 20px; margin: 24px 0;
+    background: var(--bg-card); border-radius: 0 8px 8px 0; font-style: italic; color: var(--text-secondary);
+  }
+  .article-detail .detail-content hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* ═══════════════ CODE BLOCKS ═══════════════ */
+  .code-block { background: var(--bg-code); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 24px 0; }
+  .code-block-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; border-bottom: 1px solid var(--border);
+  }
+  .code-block-dots { display: flex; gap: 6px; }
+  .code-block-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--text-tertiary); opacity: .3; }
+  .code-block-lang { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .05em; }
+  .copy-btn {
+    display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 6px;
+    border: 1px solid var(--border); background: transparent; color: var(--text-tertiary);
+    font-size: 11px; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: all .25s ease;
+  }
+  .copy-btn:hover { border-color: var(--border-hover); color: var(--text-secondary); }
+  .copy-btn.flash { background: var(--copy-flash) !important; color: #fff !important; border-color: var(--copy-flash) !important; transform: scale(1.05); }
+  .copy-btn .iconify { font-size: 14px; }
+  .code-block pre {
+    padding: 16px 20px; overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  /* Marked-generated code blocks */
+  .detail-content pre { background: var(--bg-code); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; overflow-x: auto; margin: 24px 0; position: relative; }
+  .detail-content pre code {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: var(--text-secondary);
+  }
+  .detail-content code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-code); padding: 2px 8px; border-radius: 6px; color: var(--accent-light);
+  }
+  .detail-content pre code { background: none; padding: 0; color: var(--text-secondary); }
+
+  .now-learning { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .learn-card { padding: 24px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg-card); transition: all .3s ease; }
+  .learn-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: translateY(-4px); }
+  .learn-card-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--tag-bg); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .learn-card-icon .iconify { font-size: 20px; color: var(--accent); }
+  .learn-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .learn-card p { font-size: 13px; font-weight: 300; color: var(--text-tertiary); line-height: 1.6; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .skill-item { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-card); font-size: 14px; color: var(--text-secondary); transition: all .3s ease; }
+  .skill-item:hover { border-color: var(--accent); background: var(--tag-bg); color: var(--text-primary); transform: translateY(-2px); }
+  .skill-item .iconify { font-size: 18px; color: var(--accent); }
+
+  .how-to-write {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 32px; margin-top: 48px;
+  }
+  .how-to-write h3 { font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .how-to-write ol { margin-left: 20px; color: var(--text-secondary); font-size: 14px; line-height: 2; }
+  .how-to-write code { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--bg-code); padding: 2px 8px; border-radius: 6px; color: var(--accent-light); }
+
+  footer { border-top: 1px solid var(--border); padding: 48px 24px; }
+  .footer-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+  .footer-left { font-size: 13px; color: var(--text-tertiary); }
+  .footer-left span { color: var(--accent); }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { color: var(--text-tertiary); transition: color .2s; display: flex; align-items: center; }
+  .footer-links a:hover { color: var(--text-primary); }
+
+  .reveal { opacity: 0; transform: translateY(30px) scale(.98); transition: all .8s cubic-bezier(.16,1,.3,1); filter: blur(10px); }
+  .reveal.active { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  .delay-100 { transition-delay: 100ms; } .delay-200 { transition-delay: 200ms; }
+  .delay-300 { transition-delay: 300ms; } .delay-400 { transition-delay: 400ms; } .delay-500 { transition-delay: 500ms; }
+
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; border-radius: 10px;
+    background: var(--text-primary); color: var(--bg-primary); font-size: 13px; font-weight: 500;
+    z-index: 10000; transform: translateY(80px); opacity: 0;
+    transition: all .4s cubic-bezier(.34,1.56,.64,1);
+    pointer-events: none; display: flex; align-items: center; gap: 8px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  .mobile-nav-btn { display: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-card); cursor: pointer; align-items: center; justify-content: center; color: var(--text-primary); transition: all .3s ease; }
+  @media (max-width: 768px) { .mobile-nav-btn { display: flex; } }
+  .mobile-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); z-index: 999; }
+  .mobile-nav-overlay.open { display: block; }
+  .mobile-nav-panel { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: var(--bg-secondary); border-left: 1px solid var(--border); z-index: 1000; padding: 80px 24px 24px; transform: translateX(100%); transition: transform .35s cubic-bezier(.16,1,.3,1), background var(--transition-speed) ease; }
+  .mobile-nav-panel.open { transform: translateX(0); }
+  .mobile-nav-panel a { display: block; padding: 12px 0; font-size: 16px; color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid var(--border); }
+  .mobile-nav-panel a:hover { color: var(--text-primary); }
+
+  .loading-posts { text-align: center; padding: 60px 20px; color: var(--text-tertiary); }
+  .loading-posts .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 16px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="showBlog(); return false;">
+      <span class="cursor-dot"></span> taos.dev
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showBlog(); return false;">Blog</a></li>
+      <li><a href="#learning-section">Learning</a></li>
+      <li><a href="#skills-section">Skills</a></li>
+      <li><a href="https://github.com/Taoslogos" target="_blank">GitHub</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="icon-wrap active" id="themeIconWrap">
+          <span class="iconify" id="themeIcon" data-icon="lucide:moon"></span>
+        </span>
+      </button>
+      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Menu">
+        <span class="iconify" data-icon="lucide:menu" style="font-size:20px;"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-nav-overlay" id="mobileOverlay"></div>
+<div class="mobile-nav-panel" id="mobilePanel">
+  <a href="#" onclick="showBlog(); closeMobileNav(); return false;">Blog</a>
+  <a href="#learning-section" onclick="closeMobileNav();">Learning</a>
+  <a href="#skills-section" onclick="closeMobileNav();">Skills</a>
+  <a href="https://github.com/Taoslogos" target="_blank">GitHub</a>
+</div>
+
+<div id="blogView">
+
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-badge reveal">
+      <span class="status-dot"></span>
+      Addis Ababa, Ethiopia · Curious & building daily
+    </div>
+    <h1 class="reveal delay-100">
+      Hi, I'm Taos.<br>
+      <span class="typewriter-text" id="typewriter"></span><span class="typewriter-cursor"></span>
+    </h1>
+    <p class="hero-sub reveal delay-200">
+      Electronics Engineering student who can't stop learning. I explore AI, build apps, dig into security, and figure out how technology can solve real problems for real people.
+    </p>
+    <div class="hero-techs reveal delay-300">
+      <span class="hero-tech-tag">Python</span>
+      <span class="hero-tech-tag">JavaScript</span>
+      <span class="hero-tech-tag">React</span>
+      <span class="hero-tech-tag">Flutter</span>
+      <span class="hero-tech-tag">C</span>
+      <span class="hero-tech-tag">AI/ML</span>
+      <span class="hero-tech-tag">Cybersecurity</span>
+      <span class="hero-tech-tag">Electronics</span>
+    </div>
+    <div class="hero-cta reveal delay-400">
+      <a href="#articles-section" class="btn-primary">
+        <span class="iconify" data-icon="lucide:book-open" style="font-size:16px;"></span>
+        Read the Blog
+      </a>
+      <a href="mailto:taoslogos@gmail.com" class="btn-secondary">
+        <span class="iconify" data-icon="lucide:mail" style="font-size:16px;"></span>
+        Get in Touch
+      </a>
+    </div>
+    <div class="scroll-indicator">
+      <span class="iconify" data-icon="lucide:chevron-down" style="font-size:16px;"></span> scroll
+    </div>
+  </section>
+
+  <div class="github-bar reveal">
+    <div class="github-bar-inner">
+      <div class="gh-stat"><span class="iconify" data-icon="lucide:github"></span><span class="gh-label">Repos</span><span class="gh-num" id="ghRepos">—</span></div>
+      <div class="gh-stat"><span class="iconify" data-icon="lucide:star"></span><span class="gh-label">Stars</span><span class="gh-num" id="ghStars">—</span></div>
+      <div class="gh-stat"><span class="iconify" data-icon="lucide:git-fork"></span><span class="gh-label">Forks</span><span class="gh-num" id="ghForks">—</span></div>
+      <a href="https://github.com/Taoslogos" target="_blank" class="gh-link">View Profile <span class="iconify" data-icon="lucide:arrow-up-right" style="font-size:14px;"></span></a>
+    </div>
+  </div>
+
+  <section class="section" id="articles-section">
+    <div class="section-label reveal">Blog</div>
+    <h2 class="section-title reveal delay-100">Latest Posts</h2>
+    <p class="section-desc reveal delay-200">What I'm learning, what I'm building, and what I'm figuring out — one problem at a time.</p>
+
+    <div id="postsLoading" class="loading-posts">
+      <div class="spinner"></div>
+      <p>Loading posts...</p>
+    </div>
+
+    <div id="featuredSlot"></div>
+    <div class="articles-grid" id="postsGrid"></div>
+
+    <div class="how-to-write reveal">
+      <h3>
+        <span class="iconify" data-icon="lucide:pen-line" style="font-size:20px; color:var(--accent);"></span>
+        Want to write a post?
+      </h3>
+      <ol>
+        <li>Create a file: <code>posts/your-post-slug.md</code></li>
+        <li>Add frontmatter at the top (see template below)</li>
+        <li>Write in Markdown — code blocks, links, images all work</li>
+        <li>Commit & push — it appears here automatically!</li>
+      </ol>
+      <div class="code-block" style="margin-top:16px;">
+        <div class="code-block-header">
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+          <span class="code-block-lang">markdown template</span>
+          <button class="copy-btn" onclick="copyCode(this)">
+            <span class="iconify" data-icon="lucide:copy"></span> Copy
+          </button>
+        </div>
+        <pre>---
+title: "Your Post Title Here"
+date: "2026-03-15"
+tags: ["Python", "AI"]
+image: "https://picsum.photos/seed/yourseed/800/600.jpg"
+excerpt: "A short description that appears on the card."
+---
+
+# Your Post Title
+
+Write your content here in **Markdown**.
+
+\`\`\`python
+print("Hello from Taos.dev!")
+\`\`\`
+
+- Lists work
+- **Bold** and *italic* work
+- [Links](https://github.com) work</pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="learning-section">
+    <div class="section-label reveal">Curious About</div>
+    <h2 class="section-title reveal delay-100">What I'm Exploring Now</h2>
+    <p class="section-desc reveal delay-200">Areas I'm actively digging into, building with, and trying to understand better every day.</p>
+    <div class="now-learning">
+      <div class="learn-card reveal delay-100"><div class="learn-card-icon"><span class="iconify" data-icon="lucide:brain-circuit"></span></div><h4>AI & Machine Learning</h4><p>Going beyond prompts — running models, understanding weights, and figuring out where AI genuinely helps vs. where it just looks smart.</p></div>
+      <div class="learn-card reveal delay-200"><div class="learn-card-icon"><span class="iconify" data-icon="lucide:shield-alert"></span></div><h4>Cybersecurity</h4><p>Learning to think like an attacker so I can build better defenses. Network analysis, input sanitization, vulnerability research.</p></div>
+      <div class="learn-card reveal delay-300"><div class="learn-card-icon"><span class="iconify" data-icon="lucide:smartphone"></span></div><h4>Cross-Platform Apps</h4><p>React + Capacitor for web-native apps, Flutter for offline-first tools. Which trade-offs actually matter for the people using them.</p></div>
+      <div class="learn-card reveal delay-400"><div class="learn-card-icon"><span class="iconify" data-icon="lucide:cpu"></span></div><h4>Embedded Systems</h4><p>Connecting software to the physical world. Microcontrollers, sensor interfaces, and making circuits do what code tells them to — reliably.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="skills-section">
+    <div class="section-label reveal">Tech Stack</div>
+    <h2 class="section-title reveal delay-100">Skills & Tools</h2>
+    <p class="section-desc reveal delay-200">Always adding more as I run into new problems to solve.</p>
+    <div class="skills-grid">
+      <div class="skill-item reveal delay-100"><span class="iconify" data-icon="logos:python"></span> Python</div>
+      <div class="skill-item reveal delay-100"><span class="iconify" data-icon="logos:c"></span> C</div>
+      <div class="skill-item reveal delay-200"><span class="iconify" data-icon="logos:javascript"></span> JavaScript</div>
+      <div class="skill-item reveal delay-200"><span class="iconify" data-icon="logos:react"></span> React</div>
+      <div class="skill-item reveal delay-300"><span class="iconify" data-icon="logos:flutter"></span> Flutter</div>
+      <div class="skill-item reveal delay-300"><span class="iconify" data-icon="logos:html-5"></span> HTML5</div>
+      <div class="skill-item reveal delay-400"><span class="iconify" data-icon="logos:css-3"></span> CSS3</div>
+      <div class="skill-item reveal delay-400"><span class="iconify" data-icon="lucide:layers" style="font-size:18px;color:var(--accent);"></span> Capacitor</div>
+      <div class="skill-item reveal delay-500"><span class="iconify" data-icon="lucide:shield-check" style="font-size:18px;color:var(--accent);"></span> Cybersecurity</div>
+      <div class="skill-item reveal delay-500"><span class="iconify" data-icon="lucide:circuit-board" style="font-size:18px;color:var(--accent);"></span> Electronics</div>
+      <div class="skill-item reveal delay-500"><span class="iconify" data-icon="lucide:brain" style="font-size:18px;color:var(--accent);"></span> AI / ML</div>
+      <div class="skill-item reveal delay-500"><span class="iconify" data-icon="lucide:search" style="font-size:18px;color:var(--accent);"></span> Problem Solving</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">© 2025 <span>taos.dev</span> — Always learning, always building.</div>
+      <div class="footer-links">
+        <a href="https://github.com/Taoslogos" target="_blank"><span class="iconify" data-icon="lucide:github" style="font-size:18px;"></span></a>
+        <a href="https://linkedin.com/in/taos-fseha-32ba913b8" target="_blank"><span class="iconify" data-icon="lucide:linkedin" style="font-size:18px;"></span></a>
+        <a href="mailto:taoslogos@gmail.com"><span class="iconify" data-icon="lucide:mail" style="font-size:18px;"></span></a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- DYNAMIC ARTICLE DETAIL -->
+<div class="article-detail" id="articleDynamic">
+  <button class="back-btn" onclick="showBlog()">
+    <span class="iconify" data-icon="lucide:arrow-left" style="font-size:14px;"></span> Back to Blog
+  </button>
+  <div class="article-card-tags" id="dynamicTags" style="margin-bottom:16px;"></div>
+  <h1 id="dynamicTitle"></h1>
+  <div class="detail-meta" id="dynamicMeta"></div>
+  <div class="detail-content" id="dynamicContent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════ TYPEWRITER ═══════════════
+const phrases = ["I'm endlessly curious.", "I learn something new every day.", "I build to solve real problems.", "I explore AI, security, code.", "I turn questions into projects."];
+let phraseIndex = 0, charIndex = 0, isDeleting = false;
+const typewriterEl = document.getElementById('typewriter');
+function typewrite() {
+  const c = phrases[phraseIndex];
+  if (!isDeleting) {
+    typewriterEl.textContent = c.substring(0, charIndex + 1); charIndex++;
+    if (charIndex === c.length) { isDeleting = true; setTimeout(typewrite, 2200); return; }
+    setTimeout(typewrite, 65 + Math.random() * 45);
+  } else {
+    typewriterEl.textContent = c.substring(0, charIndex - 1); charIndex--;
+    if (charIndex === 0) { isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; setTimeout(typewrite, 400); return; }
+    setTimeout(typewrite, 30);
+  }
+}
+setTimeout(typewrite, 800);
+
+// ═══════════════ PROGRESS BAR ═══════════════
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('progress-bar').style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+});
+
+// ═══════════════ THEME TOGGLE ═══════════════
+const themes = ['dark', 'light', 'terminal'];
+const themeIcons = ['lucide:moon', 'lucide:sun', 'lucide:terminal'];
+let tIdx = 0;
+const tToggle = document.getElementById('themeToggle'), tIcon = document.getElementById('themeIcon'), tWrap = document.getElementById('themeIconWrap');
+tToggle.addEventListener('click', () => {
+  tWrap.classList.remove('active'); tWrap.classList.add('exit-up');
+  setTimeout(() => {
+    tIdx = (tIdx + 1) % themes.length;
+    document.documentElement.setAttribute('data-theme', themes[tIdx]);
+    tIcon.setAttribute('data-icon', themeIcons[tIdx]);
+    tWrap.classList.remove('exit-up'); tWrap.classList.add('enter-from-below');
+    void tWrap.offsetWidth; tWrap.classList.remove('enter-from-below'); tWrap.classList.add('active');
+    showToast('Theme: ' + themes[tIdx].charAt(0).toUpperCase() + themes[tIdx].slice(1));
+  }, 250);
+});
+
+// ═══════════════ COPY CODE ═══════════════
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(() => flash(btn)).catch(() => {
+    const ta = document.createElement('textarea'); ta.value = pre.textContent;
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); flash(btn);
+  });
+}
+function flash(btn) {
+  const o = btn.innerHTML; btn.classList.add('flash');
+  btn.innerHTML = '<span class="iconify" data-icon="lucide:check"></span> Copied!';
+  setTimeout(() => { btn.classList.remove('flash'); btn.innerHTML = o; }, 1500);
+}
+
+// ═══════════════ GITHUB STATS ═══════════════
+async function fetchGH() {
+  try {
+    const d = await (await fetch('https://api.github.com/users/Taoslogos')).json();
+    if (d.public_repos !== undefined) aniN(document.getElementById('ghRepos'), d.public_repos);
+    const rr = await (await fetch('https://api.github.com/users/Taoslogos/repos?per_page=100')).json();
+    let s = 0, f = 0; rr.forEach(r => { s += r.stargazers_count || 0; f += r.forks_count || 0; });
+    aniN(document.getElementById('ghStars'), s); aniN(document.getElementById('ghForks'), f);
+  } catch(e) { ['ghRepos','ghStars','ghForks'].forEach(id => document.getElementById(id).textContent = '—'); }
+}
+function aniN(el, t) { const s = performance.now(); (function k(n) { const p = Math.min((n-s)/1200,1); el.textContent = Math.round(t*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(k); })(s); }
+fetchGH(); setInterval(fetchGH, 60000);
+
+// ═══════════════ MARKDOWN BLOG POSTS FROM GITHUB ═══════════════
+const POSTS_DIR = 'https://raw.githubusercontent.com/Taoslogos/Taoslogos.github.io/main/posts/';
+let allPosts = [];
+
+// Configure marked
+if (typeof marked !== 'undefined') {
+  marked.setOptions({
+    breaks: true,
+    gfm: true,
+    headerIds: false,
+    mangle: false
+  });
+}
+
+async function loadPosts() {
+  const loading = document.getElementById('postsLoading');
+  const featuredSlot = document.getElementById('featuredSlot');
+  const grid = document.getElementById('postsGrid');
+
+  // List of known posts — update this when you add new .md files
+  const postSlugs = [
+    'what-i-learned-ai',
+    'student-platform-react',
+    'offline-gpa-calculator',
+    'engineering-thinking-security',
+    'google-sheets-backend',
+    'bjt-biasing-circuits'
+  ];
+
+  let loaded = 0;
+  for (const slug of postSlugs) {
+    try {
+      const res = await fetch(POSTS_DIR + slug + '.md');
+      if (!res.ok) { loaded++; continue; }
+      const raw = await res.text();
+      const post = parseFrontmatter(raw, slug);
+      if (post) allPosts.push(post);
+    } catch(e) { /* skip */ }
+    loaded++;
+  }
+
+  // Remove loading
+  loading.style.display = 'none';
+
+  // Sort by date (newest first)
+  allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  // Render
+  if (allPosts.length === 0) {
+    grid.innerHTML = '<p style="color:var(--text-tertiary);grid-column:1/-1;text-align:center;padding:40px;">No posts yet. Add your first <code style="font-family:JetBrains Mono,monospace;background:var(--bg-code);padding:2px 8px;border-radius:6px;color:var(--accent-light);">.md</code> file to the <code style="font-family:JetBrains Mono,monospace;background:var(--bg-code);padding:2px 8px;border-radius:6px;color:var(--accent-light);">posts/</code> folder!</p>';
+    return;
+  }
+
+  // Featured = first post
+  const featured = allPosts[0];
+  featuredSlot.innerHTML = `
+    <div class="featured-card reveal" onclick="openDynamicPost(0)">
+      <div class="featured-card-img-wrap">
+        <img src="${featured.image || 'https://picsum.photos/seed/' + featured.slug + '/800/600.jpg'}" alt="${featured.title}" class="featured-card-img">
+      </div>
+      <div class="featured-card-body">
+        <div class="featured-label">Featured Post</div>
+        <h3 class="featured-card-title">${featured.title}</h3>
+        <p class="featured-card-excerpt">${featured.excerpt}</p>
+        <div style="display:flex;align-items:center;gap:12px;color:var(--text-tertiary);font-size:12px;">
+          <span>${formatDate(featured.date)}</span><span>·</span><span>${estimateReadTime(featured.content)} min read</span><span style="color:var(--accent);">→</span>
+        </div>
+      </div>
+    </div>`;
+
+  // Rest = grid cards
+  const rest = allPosts.slice(1);
+  grid.innerHTML = rest.map((post, i) => `
+    <div class="article-card reveal delay-${Math.min((i+1)*100, 500)}" onclick="openDynamicPost(${i + 1})">
+      <div class="article-card-img-wrap">
+        <img src="${post.image || 'https://picsum.photos/seed/' + post.slug + '/600/400.jpg'}" alt="${post.title}" class="article-card-img">
+      </div>
+      <div class="article-card-body">
+        <div class="article-card-tags">${post.tags.map(t => `<span class="article-card-tag">${t}</span>`).join('')}</div>
+        <h3 class="article-card-title">${post.title}</h3>
+        <p class="article-card-excerpt">${post.excerpt}</p>
+        <div class="article-card-meta">
+          <span>${formatDate(post.date)}</span>
+          <span class="read-time"><span class="iconify" data-icon="lucide:clock" style="font-size:12px;"></span> ${estimateReadTime(post.content)} min</span>
+          <span class="article-card-arrow"><span class="iconify" data-icon="lucide:arrow-right" style="font-size:14px;"></span></span>
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Re-observe reveals
+  document.querySelectorAll('.reveal:not(.active)').forEach(el => ro.observe(el));
+}
+
+function parseFrontmatter(raw, slug) {
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return null;
+  const fm = match[1], content = match[2];
+  const meta = {};
+  fm.split('\n').forEach(line => {
+    const m = line.match(/^(\w+)\s*:\s*(.+)$/);
+    if (m) {
+      let val = m[2].trim();
+      if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+      if (val.startsWith('[') && val.endsWith(']')) {
+        val = val.slice(1, -1).split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+      }
+      meta[m[1]] = val;
+    }
+  });
+  return {
+    slug, title: meta.title || 'Untitled', date: meta.date || '2025-01-01',
+    tags: Array.isArray(meta.tags) ? meta.tags : [],
+    image: meta.image || '', excerpt: meta.excerpt || '',
+    content
+  };
+}
+
+function formatDate(d) {
+  try { return new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }); }
+  catch(e) { return d; }
+}
+
+function estimateReadTime(content) {
+  const words = content.replace(/[#*`\[\]()]/g, '').split(/\s+/).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+function openDynamicPost(index) {
+  const post = allPosts[index];
+  if (!post) return;
+  document.getElementById('blogView').style.display = 'none';
+  document.getElementById('dynamicTags').innerHTML = post.tags.map(t => `<span class="article-card-tag">${t}</span>`).join('');
+  document.getElementById('dynamicTitle').textContent = post.title;
+  document.getElementById('dynamicMeta').innerHTML = `
+    <span>${formatDate(post.date)}</span><span>·</span>
+    <span>${estimateReadTime(post.content)} min read</span>`;
+  const html = typeof marked !== 'undefined' ? marked.parse(post.content) : post.content.replace(/\n/g, '<br>');
+  document.getElementById('dynamicContent').innerHTML = html;
+  document.getElementById('articleDynamic').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // Add copy buttons to all code blocks generated by marked
+  setTimeout(addCopyButtonsToGenerated, 100);
+}
+
+function addCopyButtonsToGenerated() {
+  document.querySelectorAll('#dynamicContent pre').forEach(pre => {
+    if (pre.querySelector('.copy-btn')) return;
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.style.position = 'absolute';
+    btn.style.top = '8px';
+    btn.style.right = '8px';
+    btn.innerHTML = '<span class="iconify" data-icon="lucide:copy"></span> Copy';
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      const code = pre.querySelector('code') ? pre.querySelector('code').textContent : pre.textContent;
+      navigator.clipboard.writeText(code).then(() => flash(btn)).catch(() => flash(btn));
+    };
+    pre.style.position = 'relative';
+    pre.appendChild(btn);
+  });
+}
+
+function showBlog() {
+  document.getElementById('articleDynamic').classList.remove('active');
+  document.getElementById('blogView').style.display = 'block';
+}
+
+// ═══════════════ REVEAL ═══════════════
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ═══════════════ TOAST ═══════════════
+let tt;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = '<span class="iconify" data-icon="lucide:check-circle" style="font-size:16px;"></span> ' + msg;
+  t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ═══════════════ MOBILE NAV ═══════════════
+document.getElementById('mobileNavBtn').addEventListener('click', () => {
+  document.getElementById('mobileOverlay').classList.add('open');
+  document.getElementById('mobilePanel').classList.add('open');
+});
+function closeMobileNav() {
+  document.getElementById('mobileOverlay').classList.remove('open');
+  document.getElementById('mobilePanel').classList.remove('open');
+}
+document.getElementById('mobileOverlay').addEventListener('click', closeMobileNav);
+
+// ═══════════════ INIT ═══════════════
+loadPosts();
+</script>
+</body>
+</html>
