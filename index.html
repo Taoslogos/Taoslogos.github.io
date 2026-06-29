@@ -10,382 +10,194 @@
 <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
-  :root { --transition-speed: 0.45s; }
-
+  :root { --ts: 0.45s; }
   [data-theme="dark"] {
-    --bg-primary: #030304; --bg-secondary: #050507;
-    --bg-card: rgba(255,255,255,0.03); --bg-card-hover: rgba(255,255,255,0.06);
-    --bg-code: rgba(255,255,255,0.05); --bg-nav: rgba(3,3,4,0.85);
-    --text-primary: #FFFFFF; --text-secondary: #94A3B8; --text-tertiary: #64748B;
-    --accent: #6366F1; --accent-light: #818CF8; --accent-glow: rgba(99,102,241,0.3);
-    --border: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.15);
-    --progress-bar: #6366F1; --copy-flash: #10B981;
-    --tag-bg: rgba(99,102,241,0.15); --tag-text: #818CF8;
-    --scrollbar-track: #050507; --scrollbar-thumb: #333;
-    --shadow-card: 0 8px 32px rgba(0,0,0,0.4);
-    --shadow-card-hover: 0 20px 60px rgba(0,0,0,0.6);
+    --bg1:#030304;--bg2:#050507;--bgc:rgba(255,255,255,0.03);--bgch:rgba(255,255,255,0.06);
+    --bgcode:rgba(255,255,255,0.05);--bgn:rgba(3,3,4,0.85);
+    --t1:#FFFFFF;--t2:#94A3B8;--t3:#64748B;
+    --ac:#6366F1;--acl:#818CF8;--acg:rgba(99,102,241,0.3);
+    --bd:rgba(255,255,255,0.08);--bdh:rgba(255,255,255,0.15);
+    --pb:#6366F1;--cf:#10B981;--tbg:rgba(99,102,241,0.15);--tbt:#818CF8;
+    --st:#050507;--sb:#333;--sc:0 8px 32px rgba(0,0,0,0.4);--sch:0 20px 60px rgba(0,0,0,0.6);
   }
-
   [data-theme="light"] {
-    --bg-primary: #F8FAFC; --bg-secondary: #F1F5F9;
-    --bg-card: rgba(255,255,255,0.8); --bg-card-hover: rgba(255,255,255,1);
-    --bg-code: #F1F5F9; --bg-nav: rgba(248,250,252,0.9);
-    --text-primary: #0F172A; --text-secondary: #475569; --text-tertiary: #94A3B8;
-    --accent: #4F46E5; --accent-light: #6366F1; --accent-glow: rgba(79,70,229,0.2);
-    --border: rgba(0,0,0,0.08); --border-hover: rgba(0,0,0,0.15);
-    --progress-bar: #4F46E5; --copy-flash: #059669;
-    --tag-bg: rgba(79,70,229,0.1); --tag-text: #4F46E5;
-    --scrollbar-track: #F1F5F9; --scrollbar-thumb: #CBD5E1;
-    --shadow-card: 0 8px 32px rgba(0,0,0,0.08);
-    --shadow-card-hover: 0 20px 60px rgba(0,0,0,0.15);
+    --bg1:#F8FAFC;--bg2:#F1F5F9;--bgc:rgba(255,255,255,0.8);--bgch:rgba(255,255,255,1);
+    --bgcode:#F1F5F9;--bgn:rgba(248,250,252,0.9);
+    --t1:#0F172A;--t2:#475569;--t3:#94A3B8;
+    --ac:#4F46E5;--acl:#6366F1;--acg:rgba(79,70,229,0.2);
+    --bd:rgba(0,0,0,0.08);--bdh:rgba(0,0,0,0.15);
+    --pb:#4F46E5;--cf:#059669;--tbg:rgba(79,70,229,0.1);--tbt:#4F46E5;
+    --st:#F1F5F9;--sb:#CBD5E1;--sc:0 8px 32px rgba(0,0,0,0.08);--sch:0 20px 60px rgba(0,0,0,0.15);
   }
-
   [data-theme="terminal"] {
-    --bg-primary: #0a0a0a; --bg-secondary: #0d0d0d;
-    --bg-card: rgba(0,255,65,0.03); --bg-card-hover: rgba(0,255,65,0.06);
-    --bg-code: rgba(0,255,65,0.05); --bg-nav: rgba(10,10,10,0.9);
-    --text-primary: #00ff41; --text-secondary: #00cc33; --text-tertiary: #009926;
-    --accent: #00ff41; --accent-light: #33ff66; --accent-glow: rgba(0,255,65,0.25);
-    --border: rgba(0,255,65,0.15); --border-hover: rgba(0,255,65,0.3);
-    --progress-bar: #00ff41; --copy-flash: #00ff41;
-    --tag-bg: rgba(0,255,65,0.1); --tag-text: #00ff41;
-    --scrollbar-track: #0a0a0a; --scrollbar-thumb: #003300;
-    --shadow-card: 0 8px 32px rgba(0,255,65,0.05);
-    --shadow-card-hover: 0 20px 60px rgba(0,255,65,0.1);
+    --bg1:#0a0a0a;--bg2:#0d0d0d;--bgc:rgba(0,255,65,0.03);--bgch:rgba(0,255,65,0.06);
+    --bgcode:rgba(0,255,65,0.05);--bgn:rgba(10,10,10,0.9);
+    --t1:#00ff41;--t2:#00cc33;--t3:#009926;
+    --ac:#00ff41;--acl:#33ff66;--acg:rgba(0,255,65,0.25);
+    --bd:rgba(0,255,65,0.15);--bdh:rgba(0,255,65,0.3);
+    --pb:#00ff41;--cf:#00ff41;--tbg:rgba(0,255,65,0.1);--tbt:#00ff41;
+    --st:#0a0a0a;--sb:#003300;--sc:0 8px 32px rgba(0,255,65,0.05);--sch:0 20px 60px rgba(0,255,65,0.1);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--sb) var(--st)}
+  body{font-family:'Inter',sans-serif;background:var(--bg1);color:var(--t1);transition:background var(--ts) ease,color var(--ts) ease;line-height:1.6;overflow-x:hidden}
+  ::selection{background:var(--ac);color:#fff}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--st)}::-webkit-scrollbar-thumb{background:var(--sb);border-radius:3px}
+
+  #progress-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:var(--pb);z-index:9999;transition:width .1s linear,background var(--ts) ease;box-shadow:0 0 10px var(--acg)}
+
+  nav{position:fixed;top:3px;left:0;right:0;height:64px;background:var(--bgn);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);z-index:1000;transition:background var(--ts) ease,border-color var(--ts) ease}
+  .nav-inner{max-width:1280px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+  .nav-logo{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:var(--t1);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color var(--ts) ease}
+  .nav-logo .dot{width:8px;height:8px;background:var(--ac);border-radius:50%;animation:pdot 2s ease-in-out infinite}
+  @keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+  .nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+  .nav-links a{font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;transition:color .2s;letter-spacing:.02em}
+  .nav-links a:hover{color:var(--t1)}
+  .nav-right{display:flex;align-items:center;gap:16px}
+
+  .theme-toggle{width:44px;height:44px;border-radius:10px;border:1px solid var(--bd);background:var(--bgc);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s ease;overflow:hidden}
+  .theme-toggle:hover{border-color:var(--bdh);background:var(--bgch);transform:scale(1.05)}
+  .theme-toggle .iw{transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s ease;display:flex;align-items:center;justify-content:center}
+  .theme-toggle .iw.out{transform:translateY(-30px) rotate(90deg);opacity:0}
+  .theme-toggle .iw.in{transform:translateY(30px) rotate(-90deg);opacity:0}
+  .theme-toggle .iw.on{transform:translateY(0) rotate(0deg);opacity:1}
+  .theme-toggle .iconify{font-size:20px;color:var(--t1);transition:color var(--ts) ease}
+
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+  .hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:var(--acg);filter:blur(120px);opacity:.3;top:10%;left:50%;transform:translateX(-50%);pointer-events:none;transition:background var(--ts) ease}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid var(--bd);background:var(--bgc);font-size:12px;font-weight:500;color:var(--t2);margin-bottom:32px;transition:all var(--ts) ease}
+  .hero-badge .sd{width:6px;height:6px;background:#10B981;border-radius:50%;position:relative}
+  .hero-badge .sd::after{content:'';position:absolute;inset:-3px;border-radius:50%;background:#10B981;animation:ping 1.5s cubic-bezier(0,0,.2,1) infinite;opacity:0}
+  @keyframes ping{75%,100%{transform:scale(2.5);opacity:0}}
+  .hero h1{font-size:clamp(36px,7vw,72px);font-weight:600;line-height:1.1;letter-spacing:-.03em;text-align:center;max-width:800px;margin-bottom:24px}
+  .tw{color:var(--ac)}
+  .tw-c{display:inline-block;width:3px;height:.85em;background:var(--ac);margin-left:4px;vertical-align:text-bottom;animation:blink 1s step-end infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .hero-sub{font-size:18px;font-weight:300;color:var(--t2);text-align:center;max-width:600px;line-height:1.7;margin-bottom:40px}
+  .hero-techs{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:48px}
+  .hero-tech-tag{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:500;font-family:'JetBrains Mono',monospace;background:var(--tbg);color:var(--tbt);transition:all var(--ts) ease}
+  .hero-cta{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+  .btn-p{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--t1);color:var(--bg1);border:none;border-radius:10px;font-size:14px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:all .3s ease;text-decoration:none}
+  .btn-p:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+  .btn-s{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:transparent;color:var(--t1);border:1px solid var(--bd);border-radius:10px;font-size:14px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:all .3s ease;text-decoration:none}
+  .btn-s:hover{border-color:var(--bdh);background:var(--bgc);transform:translateY(-2px)}
+  .scroll-ind{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--t3);font-size:11px;letter-spacing:.1em;text-transform:uppercase;animation:fl 3s ease-in-out infinite}
+  @keyframes fl{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+
+  .gh-bar{border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);background:var(--bg2);transition:all var(--ts) ease}
+  .gh-bar-in{max-width:1280px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+  .gh-s{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2)}
+  .gh-s .iconify{font-size:16px;color:var(--t1)}
+  .gh-s .gn{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--t1)}
+  .gh-s .gl{color:var(--t3);font-size:12px}
+  .gh-link{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--ac);text-decoration:none}
+  .gh-link:hover{opacity:.8}
+
+  .section{padding:96px 24px;max-width:1280px;margin:0 auto}
+  .sl{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);margin-bottom:16px;font-family:'JetBrains Mono',monospace}
+  .sl::before{content:'';width:16px;height:1px;background:var(--ac)}
+  .st{font-size:clamp(28px,4vw,40px);font-weight:600;letter-spacing:-.02em;margin-bottom:16px}
+  .sd2{font-size:16px;font-weight:300;color:var(--t2);max-width:600px;line-height:1.7;margin-bottom:48px}
+
+  .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:24px}
+
+  .article-card{background:var(--bgc);border:1px solid var(--bd);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s ease,border-color .3s ease,background var(--ts) ease;box-shadow:var(--sc)}
+  .article-card:hover{transform:translateY(-12px);box-shadow:var(--sch);border-color:var(--bdh);background:var(--bgch)}
+  .article-card-img{width:100%;height:200px;object-fit:cover;display:block;transition:transform .5s ease}
+  .article-card:hover .article-card-img{transform:scale(1.05)}
+  .article-card-img-wrap{overflow:hidden;position:relative}
+  .article-card-img-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--bgc));pointer-events:none}
+  .article-card-body{padding:20px 24px 24px}
+  .article-card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .article-card-tag{font-size:11px;font-weight:500;font-family:'JetBrains Mono',monospace;padding:3px 10px;border-radius:6px;background:var(--tbg);color:var(--tbt)}
+  .article-card-title{font-size:18px;font-weight:600;margin-bottom:8px;line-height:1.4}
+  .article-card-excerpt{font-size:14px;font-weight:300;color:var(--t2);line-height:1.6;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .article-card-meta{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--t3)}
+  .article-card-meta .rt{display:flex;align-items:center;gap:4px}
+  .article-card-arrow{opacity:0;transform:translateX(-8px);transition:all .3s ease;color:var(--ac)}
+  .article-card:hover .article-card-arrow{opacity:1;transform:translateX(0)}
+
+  .featured-card{background:var(--bgc);border:1px solid var(--bd);border-radius:20px;overflow:hidden;margin-bottom:48px;display:grid;grid-template-columns:1fr 1fr;min-height:380px;cursor:pointer;transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s ease,border-color .3s ease,background var(--ts) ease;box-shadow:var(--sc)}
+  .featured-card:hover{transform:translateY(-8px);box-shadow:var(--sch);border-color:var(--bdh)}
+  .featured-card-img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+  .featured-card:hover .featured-card-img{transform:scale(1.05)}
+  .featured-card-img-wrap{overflow:hidden}
+  .featured-card-body{padding:40px;display:flex;flex-direction:column;justify-content:center}
+  .featured-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);font-family:'JetBrains Mono',monospace;margin-bottom:16px}
+  .featured-card-title{font-size:28px;font-weight:600;line-height:1.2;margin-bottom:16px;letter-spacing:-.01em}
+  .featured-card-excerpt{font-size:15px;font-weight:300;color:var(--t2);line-height:1.7;margin-bottom:24px}
+
+  @media(max-width:768px){
+    .featured-card{grid-template-columns:1fr}
+    .featured-card-img-wrap{max-height:220px}
+    .featured-card-body{padding:24px}
+    .articles-grid{grid-template-columns:1fr}
+    .nav-links{display:none}
+    .mobile-nav-btn{display:flex!important}
   }
 
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
-  body {
-    font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary);
-    transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
-    line-height: 1.6; overflow-x: hidden;
-  }
-  ::selection { background: var(--accent); color: #fff; }
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-  ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+  .article-detail{display:none;max-width:760px;margin:0 auto;padding:120px 24px 96px}
+  .article-detail.active{display:block}
+  .back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--t2);text-decoration:none;margin-bottom:32px;cursor:pointer;transition:color .2s;background:none;border:none;font-family:'Inter',sans-serif}
+  .back-btn:hover{color:var(--t1)}
+  .article-detail h1{font-size:clamp(28px,5vw,42px);font-weight:600;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+  .detail-meta{display:flex;align-items:center;gap:16px;color:var(--t3);font-size:13px;margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+  .detail-content{font-size:16px;font-weight:300;line-height:1.8;color:var(--t2)}
+  .detail-content h2{font-size:24px;font-weight:600;color:var(--t1);margin:40px 0 16px}
+  .detail-content h3{font-size:20px;font-weight:600;color:var(--t1);margin:32px 0 12px}
+  .detail-content p{margin-bottom:20px}
+  .detail-content ul,.detail-content ol{margin:16px 0 24px 24px}
+  .detail-content li{margin-bottom:8px}
+  .detail-content strong{color:var(--t1);font-weight:600}
+  .detail-content em{font-style:italic}
+  .detail-content a{color:var(--ac);text-decoration:underline;text-underline-offset:3px}
+  .detail-content blockquote{border-left:3px solid var(--ac);padding:12px 20px;margin:24px 0;background:var(--bgc);border-radius:0 8px 8px 0;font-style:italic}
+  .detail-content pre{background:var(--bgcode);border:1px solid var(--bd);border-radius:12px;padding:16px 20px;overflow-x:auto;margin:24px 0;position:relative}
+  .detail-content pre code{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;color:var(--t2);background:none!important;padding:0!important}
+  .detail-content code{font-family:'JetBrains Mono',monospace;font-size:.88em;background:var(--bgcode);padding:2px 8px;border-radius:6px;color:var(--acl)}
+  .detail-content hr{border:none;border-top:1px solid var(--bd);margin:40px 0}
 
-  #progress-bar {
-    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-    background: var(--progress-bar); z-index: 9999;
-    transition: width 0.1s linear, background var(--transition-speed) ease;
-    box-shadow: 0 0 10px var(--accent-glow);
-  }
+  .copy-btn{position:absolute;top:8px;right:8px;display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:6px;border:1px solid var(--bd);background:var(--bgc);color:var(--t3);font-size:11px;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all .25s ease;z-index:2}
+  .copy-btn:hover{border-color:var(--bdh);color:var(--t2)}
+  .copy-btn.flash{background:var(--cf)!important;color:#fff!important;border-color:var(--cf)!important;transform:scale(1.05)}
+  .copy-btn .iconify{font-size:14px}
 
-  nav {
-    position: fixed; top: 3px; left: 0; right: 0; height: 64px;
-    background: var(--bg-nav); backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border); z-index: 1000;
-    transition: background var(--transition-speed) ease, border-color var(--transition-speed) ease;
-  }
-  .nav-inner {
-    max-width: 1280px; margin: 0 auto; height: 100%;
-    display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
-  }
-  .nav-logo {
-    font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 600;
-    color: var(--text-primary); text-decoration: none;
-    transition: color var(--transition-speed) ease;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .nav-logo .cursor-dot {
-    display: inline-block; width: 8px; height: 8px;
-    background: var(--accent); border-radius: 50%;
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
-  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)} }
-  .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
-  .nav-links a { font-size: 13px; font-weight: 500; color: var(--text-secondary); text-decoration: none; transition: color .2s; letter-spacing: .02em; }
-  .nav-links a:hover { color: var(--text-primary); }
-  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .now-learning{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .learn-card{padding:24px;border-radius:14px;border:1px solid var(--bd);background:var(--bgc);transition:all .3s ease}
+  .learn-card:hover{border-color:var(--bdh);background:var(--bgch);transform:translateY(-4px)}
+  .lci{width:40px;height:40px;border-radius:10px;background:var(--tbg);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .lci .iconify{font-size:20px;color:var(--ac)}
+  .learn-card h4{font-size:15px;font-weight:600;margin-bottom:6px}
+  .learn-card p{font-size:13px;font-weight:300;color:var(--t3);line-height:1.6}
 
-  .theme-toggle {
-    width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--border);
-    background: var(--bg-card); cursor: pointer; display: flex; align-items: center;
-    justify-content: center; transition: all .3s ease; overflow: hidden;
-  }
-  .theme-toggle:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: scale(1.05); }
-  .theme-toggle .icon-wrap {
-    transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .theme-toggle .icon-wrap.exit-up { transform: translateY(-30px) rotate(90deg); opacity: 0; }
-  .theme-toggle .icon-wrap.enter-from-below { transform: translateY(30px) rotate(-90deg); opacity: 0; }
-  .theme-toggle .icon-wrap.active { transform: translateY(0) rotate(0deg); opacity: 1; }
-  .theme-toggle .iconify { font-size: 20px; color: var(--text-primary); transition: color var(--transition-speed) ease; }
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+  .skill-item{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:12px;border:1px solid var(--bd);background:var(--bgc);font-size:14px;color:var(--t2);transition:all .3s ease}
+  .skill-item:hover{border-color:var(--ac);background:var(--tbg);color:var(--t1);transform:translateY(-2px)}
+  .skill-item .iconify{font-size:18px;color:var(--ac)}
 
-  .hero {
-    min-height: 100vh; display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    padding: 120px 24px 80px; position: relative; overflow: hidden;
-  }
-  .hero-glow {
-    position: absolute; width: 600px; height: 600px; border-radius: 50%;
-    background: var(--accent-glow); filter: blur(120px); opacity: .3;
-    top: 10%; left: 50%; transform: translateX(-50%); pointer-events: none;
-    transition: background var(--transition-speed) ease;
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 6px 16px; border-radius: 100px; border: 1px solid var(--border);
-    background: var(--bg-card); font-size: 12px; font-weight: 500;
-    color: var(--text-secondary); margin-bottom: 32px;
-    transition: all var(--transition-speed) ease;
-  }
-  .hero-badge .status-dot { width: 6px; height: 6px; background: #10B981; border-radius: 50%; position: relative; }
-  .hero-badge .status-dot::after {
-    content: ''; position: absolute; inset: -3px; border-radius: 50%;
-    background: #10B981; animation: ping 1.5s cubic-bezier(0,0,.2,1) infinite; opacity: 0;
-  }
-  @keyframes ping { 75%,100%{transform:scale(2.5);opacity:0} }
+  footer{border-top:1px solid var(--bd);padding:48px 24px}
+  .footer-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
+  .footer-left{font-size:13px;color:var(--t3)}
+  .footer-left span{color:var(--ac)}
+  .footer-links{display:flex;gap:20px}
+  .footer-links a{color:var(--t3);transition:color .2s;display:flex;align-items:center}
+  .footer-links a:hover{color:var(--t1)}
 
-  .hero h1 {
-    font-size: clamp(36px,7vw,72px); font-weight: 600; line-height: 1.1;
-    letter-spacing: -.03em; text-align: center; max-width: 800px; margin-bottom: 24px;
-  }
-  .typewriter-text { color: var(--accent); }
-  .typewriter-cursor {
-    display: inline-block; width: 3px; height: .85em; background: var(--accent);
-    margin-left: 4px; vertical-align: text-bottom; animation: blink 1s step-end infinite;
-  }
-  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+  .reveal{opacity:0;transform:translateY(30px) scale(.98);transition:all .8s cubic-bezier(.16,1,.3,1);filter:blur(10px)}
+  .reveal.active{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+  .d1{transition-delay:100ms}.d2{transition-delay:200ms}.d3{transition-delay:300ms}.d4{transition-delay:400ms}.d5{transition-delay:500ms}
 
-  .hero-sub {
-    font-size: 18px; font-weight: 300; color: var(--text-secondary);
-    text-align: center; max-width: 600px; line-height: 1.7; margin-bottom: 40px;
-  }
-  .hero-techs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 48px; }
-  .hero-tech-tag {
-    padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 500;
-    font-family: 'JetBrains Mono', monospace;
-    background: var(--tag-bg); color: var(--tag-text); transition: all var(--transition-speed) ease;
-  }
-  .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;
-    background: var(--text-primary); color: var(--bg-primary); border: none;
-    border-radius: 10px; font-size: 14px; font-weight: 500;
-    font-family: 'Inter', sans-serif; cursor: pointer; transition: all .3s ease; text-decoration: none;
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,.3); }
-  .btn-secondary {
-    display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px;
-    background: transparent; color: var(--text-primary); border: 1px solid var(--border);
-    border-radius: 10px; font-size: 14px; font-weight: 500;
-    font-family: 'Inter', sans-serif; cursor: pointer; transition: all .3s ease; text-decoration: none;
-  }
-  .btn-secondary:hover { border-color: var(--border-hover); background: var(--bg-card); transform: translateY(-2px); }
+  .toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:10px;background:var(--t1);color:var(--bg1);font-size:13px;font-weight:500;z-index:10000;transform:translateY(80px);opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;display:flex;align-items:center;gap:8px}
+  .toast.show{transform:translateY(0);opacity:1}
 
-  .scroll-indicator {
-    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    color: var(--text-tertiary); font-size: 11px; letter-spacing: .1em;
-    text-transform: uppercase; animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float { 0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)} }
-
-  .github-bar {
-    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-    background: var(--bg-secondary); transition: all var(--transition-speed) ease;
-  }
-  .github-bar-inner {
-    max-width: 1280px; margin: 0 auto; padding: 16px 24px;
-    display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap;
-  }
-  .gh-stat { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
-  .gh-stat .iconify { font-size: 16px; color: var(--text-primary); }
-  .gh-stat .gh-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--text-primary); }
-  .gh-stat .gh-label { color: var(--text-tertiary); font-size: 12px; }
-  .gh-link { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--accent); text-decoration: none; }
-  .gh-link:hover { opacity: .8; }
-
-  .section { padding: 96px 24px; max-width: 1280px; margin: 0 auto; }
-  .section-label {
-    display: inline-flex; align-items: center; gap: 8px; font-size: 11px;
-    font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 16px; font-family: 'JetBrains Mono', monospace;
-  }
-  .section-label::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
-  .section-title { font-size: clamp(28px,4vw,40px); font-weight: 600; letter-spacing: -.02em; margin-bottom: 16px; }
-  .section-desc { font-size: 16px; font-weight: 300; color: var(--text-secondary); max-width: 600px; line-height: 1.7; margin-bottom: 48px; }
-
-  .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; }
-
-  .article-card {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
-    overflow: hidden; cursor: pointer;
-    transition: transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease, border-color .3s ease, background var(--transition-speed) ease;
-    box-shadow: var(--shadow-card);
-  }
-  .article-card:hover { transform: translateY(-12px); box-shadow: var(--shadow-card-hover); border-color: var(--border-hover); background: var(--bg-card-hover); }
-  .article-card-img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform .5s ease; }
-  .article-card:hover .article-card-img { transform: scale(1.05); }
-  .article-card-img-wrap { overflow: hidden; position: relative; }
-  .article-card-img-wrap::after {
-    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
-    background: linear-gradient(transparent, var(--bg-card)); pointer-events: none;
-  }
-  .article-card-body { padding: 20px 24px 24px; }
-  .article-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-  .article-card-tag {
-    font-size: 11px; font-weight: 500; font-family: 'JetBrains Mono', monospace;
-    padding: 3px 10px; border-radius: 6px; background: var(--tag-bg); color: var(--tag-text);
-  }
-  .article-card-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
-  .article-card-excerpt {
-    font-size: 14px; font-weight: 300; color: var(--text-secondary); line-height: 1.6;
-    margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .article-card-meta { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-tertiary); }
-  .article-card-meta .read-time { display: flex; align-items: center; gap: 4px; }
-  .article-card-arrow { opacity: 0; transform: translateX(-8px); transition: all .3s ease; color: var(--accent); }
-  .article-card:hover .article-card-arrow { opacity: 1; transform: translateX(0); }
-
-  .featured-card {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
-    overflow: hidden; margin-bottom: 48px; display: grid; grid-template-columns: 1fr 1fr;
-    min-height: 380px; cursor: pointer;
-    transition: transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease, border-color .3s ease, background var(--transition-speed) ease;
-    box-shadow: var(--shadow-card);
-  }
-  .featured-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-card-hover); border-color: var(--border-hover); }
-  .featured-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
-  .featured-card:hover .featured-card-img { transform: scale(1.05); }
-  .featured-card-img-wrap { overflow: hidden; }
-  .featured-card-body { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
-  .featured-label { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); font-family: 'JetBrains Mono', monospace; margin-bottom: 16px; }
-  .featured-card-title { font-size: 28px; font-weight: 600; line-height: 1.2; margin-bottom: 16px; letter-spacing: -.01em; }
-  .featured-card-excerpt { font-size: 15px; font-weight: 300; color: var(--text-secondary); line-height: 1.7; margin-bottom: 24px; }
-
-  @media (max-width: 768px) {
-    .featured-card { grid-template-columns: 1fr; }
-    .featured-card-img-wrap { max-height: 220px; }
-    .featured-card-body { padding: 24px; }
-    .articles-grid { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
-  }
-
-  /* ═══════════════ ARTICLE DETAIL ═══════════════ */
-  .article-detail { display: none; max-width: 760px; margin: 0 auto; padding: 120px 24px 96px; }
-  .article-detail.active { display: block; }
-  .article-detail .back-btn {
-    display: inline-flex; align-items: center; gap: 6px; font-size: 13px;
-    color: var(--text-secondary); text-decoration: none; margin-bottom: 32px;
-    cursor: pointer; transition: color .2s; background: none; border: none;
-    font-family: 'Inter', sans-serif;
-  }
-  .article-detail .back-btn:hover { color: var(--text-primary); }
-  .article-detail h1 { font-size: clamp(28px,5vw,42px); font-weight: 600; letter-spacing: -.02em; line-height: 1.2; margin-bottom: 16px; }
-  .article-detail .detail-meta {
-    display: flex; align-items: center; gap: 16px; color: var(--text-tertiary);
-    font-size: 13px; margin-bottom: 40px; padding-bottom: 32px;
-    border-bottom: 1px solid var(--border); flex-wrap: wrap;
-  }
-  .article-detail .detail-content { font-size: 16px; font-weight: 300; line-height: 1.8; color: var(--text-secondary); }
-  .article-detail .detail-content h2 { font-size: 24px; font-weight: 600; color: var(--text-primary); margin: 40px 0 16px; }
-  .article-detail .detail-content h3 { font-size: 20px; font-weight: 600; color: var(--text-primary); margin: 32px 0 12px; }
-  .article-detail .detail-content p { margin-bottom: 20px; }
-  .article-detail .detail-content ul, .article-detail .detail-content ol { margin: 16px 0 24px 24px; }
-  .article-detail .detail-content li { margin-bottom: 8px; }
-  .article-detail .detail-content strong { color: var(--text-primary); font-weight: 600; }
-  .article-detail .detail-content em { font-style: italic; }
-  .article-detail .detail-content a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
-  .article-detail .detail-content blockquote {
-    border-left: 3px solid var(--accent); padding: 12px 20px; margin: 24px 0;
-    background: var(--bg-card); border-radius: 0 8px 8px 0; font-style: italic; color: var(--text-secondary);
-  }
-  .article-detail .detail-content hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
-
-  /* ═══════════════ CODE BLOCKS ═══════════════ */
-  .code-block { background: var(--bg-code); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 24px 0; }
-  .code-block-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 16px; border-bottom: 1px solid var(--border);
-  }
-  .code-block-dots { display: flex; gap: 6px; }
-  .code-block-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--text-tertiary); opacity: .3; }
-  .code-block-lang { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .05em; }
-  .copy-btn {
-    display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 6px;
-    border: 1px solid var(--border); background: transparent; color: var(--text-tertiary);
-    font-size: 11px; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: all .25s ease;
-  }
-  .copy-btn:hover { border-color: var(--border-hover); color: var(--text-secondary); }
-  .copy-btn.flash { background: var(--copy-flash) !important; color: #fff !important; border-color: var(--copy-flash) !important; transform: scale(1.05); }
-  .copy-btn .iconify { font-size: 14px; }
-  .code-block pre {
-    padding: 16px 20px; overflow-x: auto;
-    font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7;
-    color: var(--text-secondary);
-  }
-
-  /* Marked-generated code blocks */
-  .detail-content pre { background: var(--bg-code); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; overflow-x: auto; margin: 24px 0; position: relative; }
-  .detail-content pre code {
-    font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: var(--text-secondary);
-  }
-  .detail-content code {
-    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
-    background: var(--bg-code); padding: 2px 8px; border-radius: 6px; color: var(--accent-light);
-  }
-  .detail-content pre code { background: none; padding: 0; color: var(--text-secondary); }
-
-  .now-learning { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-  .learn-card { padding: 24px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg-card); transition: all .3s ease; }
-  .learn-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: translateY(-4px); }
-  .learn-card-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--tag-bg); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
-  .learn-card-icon .iconify { font-size: 20px; color: var(--accent); }
-  .learn-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-  .learn-card p { font-size: 13px; font-weight: 300; color: var(--text-tertiary); line-height: 1.6; }
-
-  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-  .skill-item { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-card); font-size: 14px; color: var(--text-secondary); transition: all .3s ease; }
-  .skill-item:hover { border-color: var(--accent); background: var(--tag-bg); color: var(--text-primary); transform: translateY(-2px); }
-  .skill-item .iconify { font-size: 18px; color: var(--accent); }
-
-  .how-to-write {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
-    padding: 32px; margin-top: 48px;
-  }
-  .how-to-write h3 { font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .how-to-write ol { margin-left: 20px; color: var(--text-secondary); font-size: 14px; line-height: 2; }
-  .how-to-write code { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--bg-code); padding: 2px 8px; border-radius: 6px; color: var(--accent-light); }
-
-  footer { border-top: 1px solid var(--border); padding: 48px 24px; }
-  .footer-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
-  .footer-left { font-size: 13px; color: var(--text-tertiary); }
-  .footer-left span { color: var(--accent); }
-  .footer-links { display: flex; gap: 20px; }
-  .footer-links a { color: var(--text-tertiary); transition: color .2s; display: flex; align-items: center; }
-  .footer-links a:hover { color: var(--text-primary); }
-
-  .reveal { opacity: 0; transform: translateY(30px) scale(.98); transition: all .8s cubic-bezier(.16,1,.3,1); filter: blur(10px); }
-  .reveal.active { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-  .delay-100 { transition-delay: 100ms; } .delay-200 { transition-delay: 200ms; }
-  .delay-300 { transition-delay: 300ms; } .delay-400 { transition-delay: 400ms; } .delay-500 { transition-delay: 500ms; }
-
-  .toast {
-    position: fixed; bottom: 24px; right: 24px; padding: 12px 20px; border-radius: 10px;
-    background: var(--text-primary); color: var(--bg-primary); font-size: 13px; font-weight: 500;
-    z-index: 10000; transform: translateY(80px); opacity: 0;
-    transition: all .4s cubic-bezier(.34,1.56,.64,1);
-    pointer-events: none; display: flex; align-items: center; gap: 8px;
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
-
-  .mobile-nav-btn { display: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-card); cursor: pointer; align-items: center; justify-content: center; color: var(--text-primary); transition: all .3s ease; }
-  @media (max-width: 768px) { .mobile-nav-btn { display: flex; } }
-  .mobile-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); z-index: 999; }
-  .mobile-nav-overlay.open { display: block; }
-  .mobile-nav-panel { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: var(--bg-secondary); border-left: 1px solid var(--border); z-index: 1000; padding: 80px 24px 24px; transform: translateX(100%); transition: transform .35s cubic-bezier(.16,1,.3,1), background var(--transition-speed) ease; }
-  .mobile-nav-panel.open { transform: translateX(0); }
-  .mobile-nav-panel a { display: block; padding: 12px 0; font-size: 16px; color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid var(--border); }
-  .mobile-nav-panel a:hover { color: var(--text-primary); }
-
-  .loading-posts { text-align: center; padding: 60px 20px; color: var(--text-tertiary); }
-  .loading-posts .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 16px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .mobile-nav-btn{display:none;width:44px;height:44px;border-radius:10px;border:1px solid var(--bd);background:var(--bgc);cursor:pointer;align-items:center;justify-content:center;color:var(--t1);transition:all .3s ease}
+  .mobile-nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:999}
+  .mobile-nav-overlay.open{display:block}
+  .mobile-nav-panel{position:fixed;top:0;right:0;width:280px;height:100%;background:var(--bg2);border-left:1px solid var(--bd);z-index:1000;padding:80px 24px 24px;transform:translateX(100%);transition:transform .35s cubic-bezier(.16,1,.3,1),background var(--ts) ease}
+  .mobile-nav-panel.open{transform:translateX(0)}
+  .mobile-nav-panel a{display:block;padding:12px 0;font-size:16px;color:var(--t2);text-decoration:none;border-bottom:1px solid var(--bd)}
+  .mobile-nav-panel a:hover{color:var(--t1)}
 </style>
 </head>
 <body>
@@ -394,169 +206,94 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="#" class="nav-logo" onclick="showBlog(); return false;">
-      <span class="cursor-dot"></span> taos.dev
-    </a>
+    <a href="#" class="nav-logo" onclick="showBlog();return false"><span class="dot"></span> taos.dev</a>
     <ul class="nav-links">
-      <li><a href="#" onclick="showBlog(); return false;">Blog</a></li>
+      <li><a href="#" onclick="showBlog();return false">Blog</a></li>
       <li><a href="#learning-section">Learning</a></li>
       <li><a href="#skills-section">Skills</a></li>
       <li><a href="https://github.com/Taoslogos" target="_blank">GitHub</a></li>
     </ul>
     <div class="nav-right">
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <span class="icon-wrap active" id="themeIconWrap">
-          <span class="iconify" id="themeIcon" data-icon="lucide:moon"></span>
-        </span>
+        <span class="iw on" id="tiw"><span class="iconify" id="ticon" data-icon="lucide:moon"></span></span>
       </button>
-      <button class="mobile-nav-btn" id="mobileNavBtn" aria-label="Menu">
-        <span class="iconify" data-icon="lucide:menu" style="font-size:20px;"></span>
-      </button>
+      <button class="mobile-nav-btn" id="mobBtn" aria-label="Menu"><span class="iconify" data-icon="lucide:menu" style="font-size:20px"></span></button>
     </div>
   </div>
 </nav>
 
-<div class="mobile-nav-overlay" id="mobileOverlay"></div>
-<div class="mobile-nav-panel" id="mobilePanel">
-  <a href="#" onclick="showBlog(); closeMobileNav(); return false;">Blog</a>
-  <a href="#learning-section" onclick="closeMobileNav();">Learning</a>
-  <a href="#skills-section" onclick="closeMobileNav();">Skills</a>
+<div class="mobile-nav-overlay" id="mobOv"></div>
+<div class="mobile-nav-panel" id="mobPan">
+  <a href="#" onclick="showBlog();closeMob();return false">Blog</a>
+  <a href="#learning-section" onclick="closeMob()">Learning</a>
+  <a href="#skills-section" onclick="closeMob()">Skills</a>
   <a href="https://github.com/Taoslogos" target="_blank">GitHub</a>
 </div>
 
+<!-- ═══════════ BLOG VIEW ═══════════ -->
 <div id="blogView">
 
   <section class="hero">
     <div class="hero-glow"></div>
-    <div class="hero-badge reveal">
-      <span class="status-dot"></span>
-      Addis Ababa, Ethiopia · Curious & building daily
+    <div class="hero-badge reveal"><span class="sd"></span> Addis Ababa, Ethiopia · Curious & building daily</div>
+    <h1 class="reveal d1">Hi, I'm Taos.<br><span class="tw" id="typewriter"></span><span class="tw-c"></span></h1>
+    <p class="hero-sub reveal d2">Electronics Engineering student who can't stop learning. I explore AI, build apps, dig into security, and figure out how technology can solve real problems for real people.</p>
+    <div class="hero-techs reveal d3">
+      <span class="hero-tech-tag">Python</span><span class="hero-tech-tag">JavaScript</span><span class="hero-tech-tag">React</span><span class="hero-tech-tag">Flutter</span><span class="hero-tech-tag">C</span><span class="hero-tech-tag">AI/ML</span><span class="hero-tech-tag">Cybersecurity</span><span class="hero-tech-tag">Electronics</span>
     </div>
-    <h1 class="reveal delay-100">
-      Hi, I'm Taos.<br>
-      <span class="typewriter-text" id="typewriter"></span><span class="typewriter-cursor"></span>
-    </h1>
-    <p class="hero-sub reveal delay-200">
-      Electronics Engineering student who can't stop learning. I explore AI, build apps, dig into security, and figure out how technology can solve real problems for real people.
-    </p>
-    <div class="hero-techs reveal delay-300">
-      <span class="hero-tech-tag">Python</span>
-      <span class="hero-tech-tag">JavaScript</span>
-      <span class="hero-tech-tag">React</span>
-      <span class="hero-tech-tag">Flutter</span>
-      <span class="hero-tech-tag">C</span>
-      <span class="hero-tech-tag">AI/ML</span>
-      <span class="hero-tech-tag">Cybersecurity</span>
-      <span class="hero-tech-tag">Electronics</span>
+    <div class="hero-cta reveal d4">
+      <a href="#articles-section" class="btn-p"><span class="iconify" data-icon="lucide:book-open" style="font-size:16px"></span> Read the Blog</a>
+      <a href="mailto:taoslogos@gmail.com" class="btn-s"><span class="iconify" data-icon="lucide:mail" style="font-size:16px"></span> Get in Touch</a>
     </div>
-    <div class="hero-cta reveal delay-400">
-      <a href="#articles-section" class="btn-primary">
-        <span class="iconify" data-icon="lucide:book-open" style="font-size:16px;"></span>
-        Read the Blog
-      </a>
-      <a href="mailto:taoslogos@gmail.com" class="btn-secondary">
-        <span class="iconify" data-icon="lucide:mail" style="font-size:16px;"></span>
-        Get in Touch
-      </a>
-    </div>
-    <div class="scroll-indicator">
-      <span class="iconify" data-icon="lucide:chevron-down" style="font-size:16px;"></span> scroll
-    </div>
+    <div class="scroll-ind"><span class="iconify" data-icon="lucide:chevron-down" style="font-size:16px"></span> scroll</div>
   </section>
 
-  <div class="github-bar reveal">
-    <div class="github-bar-inner">
-      <div class="gh-stat"><span class="iconify" data-icon="lucide:github"></span><span class="gh-label">Repos</span><span class="gh-num" id="ghRepos">—</span></div>
-      <div class="gh-stat"><span class="iconify" data-icon="lucide:star"></span><span class="gh-label">Stars</span><span class="gh-num" id="ghStars">—</span></div>
-      <div class="gh-stat"><span class="iconify" data-icon="lucide:git-fork"></span><span class="gh-label">Forks</span><span class="gh-num" id="ghForks">—</span></div>
-      <a href="https://github.com/Taoslogos" target="_blank" class="gh-link">View Profile <span class="iconify" data-icon="lucide:arrow-up-right" style="font-size:14px;"></span></a>
+  <div class="gh-bar reveal">
+    <div class="gh-bar-in">
+      <div class="gh-s"><span class="iconify" data-icon="lucide:github"></span><span class="gl">Repos</span><span class="gn" id="ghR">—</span></div>
+      <div class="gh-s"><span class="iconify" data-icon="lucide:star"></span><span class="gl">Stars</span><span class="gn" id="ghS">—</span></div>
+      <div class="gh-s"><span class="iconify" data-icon="lucide:git-fork"></span><span class="gl">Forks</span><span class="gn" id="ghF">—</span></div>
+      <a href="https://github.com/Taoslogos" target="_blank" class="gh-link">View Profile <span class="iconify" data-icon="lucide:arrow-up-right" style="font-size:14px"></span></a>
     </div>
   </div>
 
   <section class="section" id="articles-section">
-    <div class="section-label reveal">Blog</div>
-    <h2 class="section-title reveal delay-100">Latest Posts</h2>
-    <p class="section-desc reveal delay-200">What I'm learning, what I'm building, and what I'm figuring out — one problem at a time.</p>
-
-    <div id="postsLoading" class="loading-posts">
-      <div class="spinner"></div>
-      <p>Loading posts...</p>
-    </div>
-
+    <div class="sl reveal">Blog</div>
+    <h2 class="st reveal d1">Latest Posts</h2>
+    <p class="sd2 reveal d2">What I'm learning, what I'm building, and what I'm figuring out — one problem at a time.</p>
     <div id="featuredSlot"></div>
     <div class="articles-grid" id="postsGrid"></div>
-
-    <div class="how-to-write reveal">
-      <h3>
-        <span class="iconify" data-icon="lucide:pen-line" style="font-size:20px; color:var(--accent);"></span>
-        Want to write a post?
-      </h3>
-      <ol>
-        <li>Create a file: <code>posts/your-post-slug.md</code></li>
-        <li>Add frontmatter at the top (see template below)</li>
-        <li>Write in Markdown — code blocks, links, images all work</li>
-        <li>Commit & push — it appears here automatically!</li>
-      </ol>
-      <div class="code-block" style="margin-top:16px;">
-        <div class="code-block-header">
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-          <span class="code-block-lang">markdown template</span>
-          <button class="copy-btn" onclick="copyCode(this)">
-            <span class="iconify" data-icon="lucide:copy"></span> Copy
-          </button>
-        </div>
-        <pre>---
-title: "Your Post Title Here"
-date: "2026-03-15"
-tags: ["Python", "AI"]
-image: "https://picsum.photos/seed/yourseed/800/600.jpg"
-excerpt: "A short description that appears on the card."
----
-
-# Your Post Title
-
-Write your content here in **Markdown**.
-
-\`\`\`python
-print("Hello from Taos.dev!")
-\`\`\`
-
-- Lists work
-- **Bold** and *italic* work
-- [Links](https://github.com) work</pre>
-      </div>
-    </div>
   </section>
 
   <section class="section" id="learning-section">
-    <div class="section-label reveal">Curious About</div>
-    <h2 class="section-title reveal delay-100">What I'm Exploring Now</h2>
-    <p class="section-desc reveal delay-200">Areas I'm actively digging into, building with, and trying to understand better every day.</p>
+    <div class="sl reveal">Curious About</div>
+    <h2 class="st reveal d1">What I'm Exploring Now</h2>
+    <p class="sd2 reveal d2">Areas I'm actively digging into, building with, and trying to understand better every day.</p>
     <div class="now-learning">
-      <div class="learn-card reveal delay-100"><div class="learn-card-icon"><span class="iconify" data-icon="lucide:brain-circuit"></span></div><h4>AI & Machine Learning</h4><p>Going beyond prompts — running models, understanding weights, and figuring out where AI genuinely helps vs. where it just looks smart.</p></div>
-      <div class="learn-card reveal delay-200"><div class="learn-card-icon"><span class="iconify" data-icon="lucide:shield-alert"></span></div><h4>Cybersecurity</h4><p>Learning to think like an attacker so I can build better defenses. Network analysis, input sanitization, vulnerability research.</p></div>
-      <div class="learn-card reveal delay-300"><div class="learn-card-icon"><span class="iconify" data-icon="lucide:smartphone"></span></div><h4>Cross-Platform Apps</h4><p>React + Capacitor for web-native apps, Flutter for offline-first tools. Which trade-offs actually matter for the people using them.</p></div>
-      <div class="learn-card reveal delay-400"><div class="learn-card-icon"><span class="iconify" data-icon="lucide:cpu"></span></div><h4>Embedded Systems</h4><p>Connecting software to the physical world. Microcontrollers, sensor interfaces, and making circuits do what code tells them to — reliably.</p></div>
+      <div class="learn-card reveal d1"><div class="lci"><span class="iconify" data-icon="lucide:brain-circuit"></span></div><h4>AI & Machine Learning</h4><p>Going beyond prompts — running models, understanding weights, and figuring out where AI genuinely helps vs. where it just looks smart.</p></div>
+      <div class="learn-card reveal d2"><div class="lci"><span class="iconify" data-icon="lucide:shield-alert"></span></div><h4>Cybersecurity</h4><p>Learning to think like an attacker so I can build better defenses. Network analysis, input sanitization, vulnerability research.</p></div>
+      <div class="learn-card reveal d3"><div class="lci"><span class="iconify" data-icon="lucide:smartphone"></span></div><h4>Cross-Platform Apps</h4><p>React + Capacitor for web-native apps, Flutter for offline-first tools. Which trade-offs actually matter for the people using them.</p></div>
+      <div class="learn-card reveal d4"><div class="lci"><span class="iconify" data-icon="lucide:cpu"></span></div><h4>Embedded Systems</h4><p>Connecting software to the physical world. Microcontrollers, sensor interfaces, and making circuits do what code tells them to — reliably.</p></div>
     </div>
   </section>
 
   <section class="section" id="skills-section">
-    <div class="section-label reveal">Tech Stack</div>
-    <h2 class="section-title reveal delay-100">Skills & Tools</h2>
-    <p class="section-desc reveal delay-200">Always adding more as I run into new problems to solve.</p>
+    <div class="sl reveal">Tech Stack</div>
+    <h2 class="st reveal d1">Skills & Tools</h2>
+    <p class="sd2 reveal d2">Always adding more as I run into new problems to solve.</p>
     <div class="skills-grid">
-      <div class="skill-item reveal delay-100"><span class="iconify" data-icon="logos:python"></span> Python</div>
-      <div class="skill-item reveal delay-100"><span class="iconify" data-icon="logos:c"></span> C</div>
-      <div class="skill-item reveal delay-200"><span class="iconify" data-icon="logos:javascript"></span> JavaScript</div>
-      <div class="skill-item reveal delay-200"><span class="iconify" data-icon="logos:react"></span> React</div>
-      <div class="skill-item reveal delay-300"><span class="iconify" data-icon="logos:flutter"></span> Flutter</div>
-      <div class="skill-item reveal delay-300"><span class="iconify" data-icon="logos:html-5"></span> HTML5</div>
-      <div class="skill-item reveal delay-400"><span class="iconify" data-icon="logos:css-3"></span> CSS3</div>
-      <div class="skill-item reveal delay-400"><span class="iconify" data-icon="lucide:layers" style="font-size:18px;color:var(--accent);"></span> Capacitor</div>
-      <div class="skill-item reveal delay-500"><span class="iconify" data-icon="lucide:shield-check" style="font-size:18px;color:var(--accent);"></span> Cybersecurity</div>
-      <div class="skill-item reveal delay-500"><span class="iconify" data-icon="lucide:circuit-board" style="font-size:18px;color:var(--accent);"></span> Electronics</div>
-      <div class="skill-item reveal delay-500"><span class="iconify" data-icon="lucide:brain" style="font-size:18px;color:var(--accent);"></span> AI / ML</div>
-      <div class="skill-item reveal delay-500"><span class="iconify" data-icon="lucide:search" style="font-size:18px;color:var(--accent);"></span> Problem Solving</div>
+      <div class="skill-item reveal d1"><span class="iconify" data-icon="logos:python"></span> Python</div>
+      <div class="skill-item reveal d1"><span class="iconify" data-icon="logos:c"></span> C</div>
+      <div class="skill-item reveal d2"><span class="iconify" data-icon="logos:javascript"></span> JavaScript</div>
+      <div class="skill-item reveal d2"><span class="iconify" data-icon="logos:react"></span> React</div>
+      <div class="skill-item reveal d3"><span class="iconify" data-icon="logos:flutter"></span> Flutter</div>
+      <div class="skill-item reveal d3"><span class="iconify" data-icon="logos:html-5"></span> HTML5</div>
+      <div class="skill-item reveal d4"><span class="iconify" data-icon="logos:css-3"></span> CSS3</div>
+      <div class="skill-item reveal d4"><span class="iconify" data-icon="lucide:layers" style="font-size:18px;color:var(--ac)"></span> Capacitor</div>
+      <div class="skill-item reveal d5"><span class="iconify" data-icon="lucide:shield-check" style="font-size:18px;color:var(--ac)"></span> Cybersecurity</div>
+      <div class="skill-item reveal d5"><span class="iconify" data-icon="lucide:circuit-board" style="font-size:18px;color:var(--ac)"></span> Electronics</div>
+      <div class="skill-item reveal d5"><span class="iconify" data-icon="lucide:brain" style="font-size:18px;color:var(--ac)"></span> AI / ML</div>
+      <div class="skill-item reveal d5"><span class="iconify" data-icon="lucide:search" style="font-size:18px;color:var(--ac)"></span> Problem Solving</div>
     </div>
   </section>
 
@@ -564,292 +301,412 @@ print("Hello from Taos.dev!")
     <div class="footer-inner">
       <div class="footer-left">© 2025 <span>taos.dev</span> — Always learning, always building.</div>
       <div class="footer-links">
-        <a href="https://github.com/Taoslogos" target="_blank"><span class="iconify" data-icon="lucide:github" style="font-size:18px;"></span></a>
-        <a href="https://linkedin.com/in/taos-fseha-32ba913b8" target="_blank"><span class="iconify" data-icon="lucide:linkedin" style="font-size:18px;"></span></a>
-        <a href="mailto:taoslogos@gmail.com"><span class="iconify" data-icon="lucide:mail" style="font-size:18px;"></span></a>
+        <a href="https://github.com/Taoslogos" target="_blank"><span class="iconify" data-icon="lucide:github" style="font-size:18px"></span></a>
+        <a href="https://linkedin.com/in/taos-fseha-32ba913b8" target="_blank"><span class="iconify" data-icon="lucide:linkedin" style="font-size:18px"></span></a>
+        <a href="mailto:taoslogos@gmail.com"><span class="iconify" data-icon="lucide:mail" style="font-size:18px"></span></a>
       </div>
     </div>
   </footer>
 </div>
 
-<!-- DYNAMIC ARTICLE DETAIL -->
+<!-- ═══════════ ARTICLE DETAIL ═══════════ -->
 <div class="article-detail" id="articleDynamic">
-  <button class="back-btn" onclick="showBlog()">
-    <span class="iconify" data-icon="lucide:arrow-left" style="font-size:14px;"></span> Back to Blog
-  </button>
-  <div class="article-card-tags" id="dynamicTags" style="margin-bottom:16px;"></div>
-  <h1 id="dynamicTitle"></h1>
-  <div class="detail-meta" id="dynamicMeta"></div>
-  <div class="detail-content" id="dynamicContent"></div>
+  <button class="back-btn" onclick="showBlog()"><span class="iconify" data-icon="lucide:arrow-left" style="font-size:14px"></span> Back to Blog</button>
+  <div class="article-card-tags" id="dTags" style="margin-bottom:16px"></div>
+  <h1 id="dTitle"></h1>
+  <div class="detail-meta" id="dMeta"></div>
+  <div class="detail-content" id="dContent"></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════ TYPEWRITER ═══════════════
-const phrases = ["I'm endlessly curious.", "I learn something new every day.", "I build to solve real problems.", "I explore AI, security, code.", "I turn questions into projects."];
-let phraseIndex = 0, charIndex = 0, isDeleting = false;
-const typewriterEl = document.getElementById('typewriter');
-function typewrite() {
-  const c = phrases[phraseIndex];
-  if (!isDeleting) {
-    typewriterEl.textContent = c.substring(0, charIndex + 1); charIndex++;
-    if (charIndex === c.length) { isDeleting = true; setTimeout(typewrite, 2200); return; }
-    setTimeout(typewrite, 65 + Math.random() * 45);
-  } else {
-    typewriterEl.textContent = c.substring(0, charIndex - 1); charIndex--;
-    if (charIndex === 0) { isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; setTimeout(typewrite, 400); return; }
-    setTimeout(typewrite, 30);
+/* ═══════════════════════════════════════════════════
+   ALL POSTS ARE EMBEDDED HERE — NO EXTERNAL FETCHING
+   To edit a post: find it below, change the text,
+   then commit on GitHub. To add a new post: copy
+   one block, change the slug/title/date/tags/content,
+   and it appears automatically!
+   ═══════════════════════════════════════════════════ */
+
+const POSTS = [
+
+// ─── POST 1 ───
+{
+  slug: "what-i-learned-ai",
+  title: "What I Actually Learned After 6 Months of Exploring AI",
+  date: "2026-01-15",
+  tags: ["AI", "Learning", "Engineering"],
+  image: "https://picsum.photos/seed/aicurious2026/800/600.jpg",
+  excerpt: "Not the hype — the real stuff. Using AI to cross-check circuits, catch edge cases, and think through problems I couldn't solve alone.",
+  content: `Six months ago I decided to stop reading about AI and start actually using it. Not in the "generate a blog post" sense — in the "can this help me understand a BJT circuit better?" sense. Here's what I found.
+
+## AI as a Thinking Partner, Not an Answer Machine
+
+The biggest shift was realizing that AI's value isn't in giving me answers — it's in forcing me to ask better questions. When I'd describe a circuit to an LLM and it'd respond with something slightly wrong, I'd have to articulate exactly *why* it was wrong. That process of correcting the AI taught me more than the AI itself.
+
+\`\`\`python
+def verify_bjt_bias(vcc, rb, rc, beta, vbe=0.7):
+    """Calculate and verify BJT operating point"""
+    ib = (vcc - vbe) / rb
+    ic = beta * ib
+    vce = vcc - ic * rc
+
+    is_active = vce > vbe
+    is_saturated = vce < vbe
+
+    return {
+        'ib_ua': round(ib * 1e6, 2),
+        'ic_ma': round(ic * 1e3, 2),
+        'vce_v': round(vce, 2),
+        'region': 'active' if is_active else 'saturation',
+        'stable': is_active
+    }
+\`\`\`
+
+## Where AI Genuinely Helped
+
+- **Cross-checking calculations** — Running my math past an AI caught two sign errors in a lab report that I'd missed for hours
+- **Explaining concepts I was stuck on** — "Explain MOSFET threshold voltage like I'm an EE student who keeps confusing Vth with Vgs" gave me the analogy that finally clicked
+- **Generating test cases** — For my GPA calculator, I asked AI to come up with weird grading scenarios. It found 3 edge cases I hadn't considered
+
+## Where AI Failed Hard
+
+- **Flutter layout code** — Consistently suggested deprecated APIs and widgets that don't exist
+- **Resistor value selection** — Suggested standard values that would have put my BJT deep into saturation
+- **Security analysis** — Gave me a sanitized input function with a regex so trivially bypassable it was almost funny
+
+## The Real Takeaway
+
+AI is an incredible tool for curiosity-driven learning — if you already know enough to verify what it tells you. The danger isn't that AI is wrong sometimes. The danger is that it sounds confident when it's wrong. As an engineering student, I'm trained to question everything. That mindset turns out to be the perfect filter for working with AI.
+
+I'm going deeper in 2026 — exploring local models, fine-tuning, and actually understanding what happens inside the neural network. The curiosity isn't slowing down.`
+},
+
+// ─── POST 2 ───
+{
+  slug: "student-platform-react",
+  title: "Building a Student Platform to Solve a Real Problem",
+  date: "2026-01-08",
+  tags: ["React", "Capacitor", "Google Sheets"],
+  image: "https://picsum.photos/seed/eduplatform2/800/600.jpg",
+  excerpt: "200+ students needed course tracking and announcements. We had React, Google Sheets, and two weeks.",
+  content: `When our department needed a way to track courses and push announcements to 200+ students, nobody had budget for a proper backend. What we did have: Google Sheets, a React codebase, and two weeks.
+
+## Listening Before Building
+
+I spent three days just talking to department heads and class representatives before writing a single line of code. What I found: students didn't need a fancy app. They needed to know three things — what courses they're registered for, what's changed this week, and what announcements they'd missed.
+
+\`\`\`javascript
+const fetchSheetData = async (sheetId, range) => {
+  const url = \`https://docs.google.com/spreadsheets/d/\${sheetId}/gviz/tq?tqx=out:csv&range=\${range}\`;
+  const response = await fetch(url);
+  const csv = await response.text();
+
+  // Parse with validation — drop empty/malformed rows
+  const rows = csv.split('\\n')
+    .map(row => row.split(',').map(cell => cell.trim().replace(/^"|"$/g, '')))
+    .filter(row => row.every(cell => cell !== ''));
+
+  return rows;
+};
+\`\`\`
+
+## Validation Was Non-Negotiable
+
+Google Sheets is forgiving — someone can type "3.5" in a GPA column or leave it blank. Our app couldn't crash because of that. We added checks at every layer: schema validation on fetch, type coercion for numbers, duplicate detection for announcements, and offline caching so the app works even when the network doesn't.
+
+\`\`\`javascript
+const validateRow = (row, schema) => {
+  const errors = [];
+  schema.forEach(({ key, type, required }) => {
+    const value = row[key];
+    if (required && !value) errors.push(\`Missing: \${key}\`);
+    if (value && type === 'number' && isNaN(Number(value))) {
+      errors.push(\`Invalid number: \${key}=\${value}\`);
+    }
+  });
+  return { valid: errors.length === 0, errors };
+};
+\`\`\`
+
+## The Lesson
+
+The best technical decision we made was choosing the simplest architecture that could work. We didn't need a database. We needed to ship something that solved a problem for 200 people. Every hour spent on infrastructure would have been an hour not spent making the app actually useful.`
+},
+
+// ─── POST 3 ───
+{
+  slug: "offline-gpa-calculator",
+  title: "Offline GPA Calculator: Why I Tested 50+ Edge Cases",
+  date: "2026-02-10",
+  tags: ["Flutter", "Offline-First", "Testing"],
+  image: "https://picsum.photos/seed/fluttergpa2/800/600.jpg",
+  excerpt: "When your app handles academic records, a single wrong calculation can change someone's future.",
+  content: `The requirement was simple: calculate GPA without internet. The responsibility was heavy: a wrong calculation could affect a student's academic decisions. So I didn't just build it — I tried to break it.
+
+\`\`\`dart
+class GPACalculator {
+  static double calculate(List<Course> courses) {
+    if (courses.isEmpty) return 0.0;
+
+    // Filter out withdrawn/incomplete — they don't count
+    final graded = courses.where((c) =>
+      c.grade != 'W' && c.grade != 'I' && c.grade != 'N'
+    ).toList();
+
+    final totalPoints = graded.fold<double>(0.0,
+      (sum, c) => sum + (c.gradePoint * c.creditHours));
+    final totalCredits = graded.fold<double>(0.0,
+      (sum, c) => sum + c.creditHours);
+
+    return totalCredits == 0 ? 0.0 : totalPoints / totalCredits;
   }
 }
-setTimeout(typewrite, 800);
+\`\`\`
+
+## The Edge Cases That Mattered
+
+- A student who withdrew from every course — should return 0.0, not crash
+- Repeated courses: does the latest attempt replace the old one or do both count?
+- Non-standard credit weights (0-credit seminars, lab courses with different weights)
+- All A+ grades vs. all F grades — boundary testing
+- Grade point values that don't exist in the standard scale
+
+## Why Flutter
+
+Flutter's type system caught three null-safety bugs during development that would have been runtime crashes in JavaScript. The Dart type system isn't just ceremonial — when you're handling academic records, a null slipping through can mean a student sees the wrong GPA. That's unacceptable.
+
+The 120+ test cases I wrote gave me confidence to ship — not because the code was perfect, but because I knew exactly where its limits were.`
+},
+
+// ─── POST 4 ───
+{
+  slug: "engineering-thinking-security",
+  title: "How Engineering Thinking Made Me Better at Security",
+  date: "2025-12-20",
+  tags: ["Security", "Python", "Mindset"],
+  image: "https://picsum.photos/seed/cybersec2025b/800/600.jpg",
+  excerpt: "Finding edge cases in circuits and finding vulnerabilities in code turned out to be the same skill.",
+  content: `In electronics, we spend hours finding edge cases — what happens when voltage drops 5%, when a resistor drifts, when timing is off by microseconds. When I started learning security, I realized it was the exact same discipline applied to software.
+
+\`\`\`python
+import re
+
+def sanitize_input(user_input: str) -> str:
+    """Basic input sanitization — always verify, never trust"""
+    sql_patterns = [
+        r"(?i)'\\s*(OR|AND)\\s*'",
+        r"(?i)UNION\\s+SELECT",
+        r"(?i)DROP\\s+TABLE",
+        r";\\s*--"
+    ]
+    for pattern in sql_patterns:
+        if re.search(pattern, user_input):
+            raise ValueError(f"Blocked pattern: {pattern}")
+
+    clean = re.sub(r"<[^>]*>", "", user_input)
+    return clean.strip()
+\`\`\`
+
+## The Mindset Shift
+
+Stop assuming inputs are valid and start proving they are. In circuit design, you don't assume a component is within spec — you measure it. In security, you don't assume input is safe — you validate it. Same instinct, different domain.
+
+## What Surprised Me
+
+How much security thinking improved my regular code. After studying injection attacks, I started adding input validation to everything — not because I expected attacks, but because it catches bugs I'd otherwise miss.
+
+Defensive coding and defensive engineering are the same habit. The more I learn about security, the better engineer I become — and vice versa.`
+},
+
+// ─── POST 5 ───
+{
+  slug: "google-sheets-backend",
+  title: "Google Sheets as a Backend: Choosing the Right Tool",
+  date: "2025-10-15",
+  tags: ["API", "Problem Solving", "Google Sheets"],
+  image: "https://picsum.photos/seed/googlesheets2/800/600.jpg",
+  excerpt: "The biggest lesson wasn't technical — it was learning to ask what people actually need before choosing technology.",
+  content: `Every architecture decision is a trade-off. The question isn't "what's the best technology?" — it's "what's the best technology *for this specific problem and these specific people*?"
+
+\`\`\`javascript
+// Polling with exponential backoff — simple but effective
+const pollSheet = async (sheetId, range, interval = 30000) => {
+  let delay = interval;
+  const attempt = async () => {
+    try {
+      const data = await fetchSheetData(sheetId, range);
+      delay = interval;
+      return data;
+    } catch (err) {
+      console.warn(\`Poll failed, retrying in \${delay}ms\`);
+      await new Promise(r => setTimeout(r, delay));
+      delay = Math.min(delay * 2, 300000);
+      return attempt();
+    }
+  };
+  return attempt();
+};
+\`\`\`
+
+## Why It Worked
+
+Google Sheets gives you version history for free, non-technical staff can update data directly, and the CSV export endpoint is fast for datasets under 10k rows. The downsides? No real-time updates, no complex queries, no row-level permissions. But none of those mattered for what students actually needed.
+
+## The Real Lesson
+
+The biggest lesson wasn't technical at all — it was learning to ask "what do these people actually need?" before asking "what technology should I use?" That one habit has changed how I approach every project since.`
+},
+
+// ─── POST 6 ───
+{
+  slug: "bjt-biasing-circuits",
+  title: "BJT Biasing Circuits: What My Textbook Didn't Explain",
+  date: "2025-11-10",
+  tags: ["Electronics", "Deep Dive"],
+  image: "https://picsum.photos/seed/labreports2/800/600.jpg",
+  excerpt: "The textbook gave me the equations. What it didn't give me was the intuition for why things go wrong.",
+  content: `My textbook gave me the equations. What it didn't give me was the intuition for *why* things go wrong and *when* the math stops being enough.
+
+## The Q-Point Problem
+
+You calculate the Q-point, verify it's in the active region, move on. But then you build the circuit and the output is clipped. Why? Because the textbook assumed ideal resistors and room temperature. Real 5% tolerance resistors shifted my Q-point enough to clip on one side. A 10°C temperature rise made it worse.
+
+## What I Had to Learn Myself
+
+- **Resistor tolerance matters** — A 5% resistor on R1 and R2 in a voltage divider doesn't just shift the bias — it can push the transistor out of the active region entirely
+- **Thermal stability isn't theoretical** — Without proper emitter degeneration, a BJT circuit that works at 25°C can fail at 45°C
+- **Measurement vs. calculation** — The gap between your calculated VCE and measured VCE tells you more about your circuit than either number alone
+
+## Why I Keep Building
+
+This is why I keep building things instead of just reading about them. The textbook teaches you the model. Building it teaches you where the model breaks — and that's where the real learning happens.`
+}
+
+/* ═══════════════════════════════════════════════
+   TO ADD A NEW POST:
+   Copy any block above, paste it here before
+   the closing ]; and change:
+   - slug: unique-lowercase-with-hyphens
+   - title: "Your New Post Title"
+   - date: "2026-03-15"
+   - tags: ["Tag1", "Tag2"]
+   - image: "https://picsum.photos/seed/YOURSEED/800/600.jpg"
+   - excerpt: "Short card description."
+   - content: `Your full post in Markdown...`
+   ═══════════════════════════════════════════════ */
+
+];
+
+/* ═══════════════ END OF POSTS ═══════════════ */
+
+
+// ═══════════════ TYPEWRITER ═══════════════
+const phrases=["I'm endlessly curious.","I learn something new every day.","I build to solve real problems.","I explore AI, security, code.","I turn questions into projects."];
+let pI=0,cI=0,isD=false;
+const twE=document.getElementById('typewriter');
+function tw(){const c=phrases[pI];if(!isD){twE.textContent=c.substring(0,cI+1);cI++;if(cI===c.length){isD=true;setTimeout(tw,2200);return}setTimeout(tw,65+Math.random()*45)}else{twE.textContent=c.substring(0,cI-1);cI--;if(cI===0){isD=false;pI=(pI+1)%phrases.length;setTimeout(tw,400);return}setTimeout(tw,30)}}
+setTimeout(tw,800);
 
 // ═══════════════ PROGRESS BAR ═══════════════
-window.addEventListener('scroll', () => {
-  const h = document.documentElement.scrollHeight - window.innerHeight;
-  document.getElementById('progress-bar').style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
-});
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-window.innerHeight;document.getElementById('progress-bar').style.width=(h>0?(window.scrollY/h)*100:0)+'%'});
 
 // ═══════════════ THEME TOGGLE ═══════════════
-const themes = ['dark', 'light', 'terminal'];
-const themeIcons = ['lucide:moon', 'lucide:sun', 'lucide:terminal'];
-let tIdx = 0;
-const tToggle = document.getElementById('themeToggle'), tIcon = document.getElementById('themeIcon'), tWrap = document.getElementById('themeIconWrap');
-tToggle.addEventListener('click', () => {
-  tWrap.classList.remove('active'); tWrap.classList.add('exit-up');
-  setTimeout(() => {
-    tIdx = (tIdx + 1) % themes.length;
-    document.documentElement.setAttribute('data-theme', themes[tIdx]);
-    tIcon.setAttribute('data-icon', themeIcons[tIdx]);
-    tWrap.classList.remove('exit-up'); tWrap.classList.add('enter-from-below');
-    void tWrap.offsetWidth; tWrap.classList.remove('enter-from-below'); tWrap.classList.add('active');
-    showToast('Theme: ' + themes[tIdx].charAt(0).toUpperCase() + themes[tIdx].slice(1));
-  }, 250);
-});
+const TH=['dark','light','terminal'],TI=['lucide:moon','lucide:sun','lucide:terminal'];
+let tI=0;const tT=document.getElementById('themeToggle'),tIc=document.getElementById('ticon'),tW=document.getElementById('tiw');
+tT.addEventListener('click',()=>{tW.classList.remove('on');tW.classList.add('out');setTimeout(()=>{tI=(tI+1)%TH.length;document.documentElement.setAttribute('data-theme',TH[tI]);tIc.setAttribute('data-icon',TI[tI]);tW.classList.remove('out');tW.classList.add('in');void tW.offsetWidth;tW.classList.remove('in');tW.classList.add('on');showToast('Theme: '+TH[tI].charAt(0).toUpperCase()+TH[tI].slice(1))},250)});
 
 // ═══════════════ COPY CODE ═══════════════
-function copyCode(btn) {
-  const pre = btn.closest('.code-block').querySelector('pre');
-  navigator.clipboard.writeText(pre.textContent).then(() => flash(btn)).catch(() => {
-    const ta = document.createElement('textarea'); ta.value = pre.textContent;
-    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); flash(btn);
-  });
-}
-function flash(btn) {
-  const o = btn.innerHTML; btn.classList.add('flash');
-  btn.innerHTML = '<span class="iconify" data-icon="lucide:check"></span> Copied!';
-  setTimeout(() => { btn.classList.remove('flash'); btn.innerHTML = o; }, 1500);
-}
+function copyCode(btn){const pre=btn.closest('pre')||btn.parentElement;const code=pre.querySelector('code')?pre.querySelector('code').textContent:pre.textContent;navigator.clipboard.writeText(code).then(()=>flash(btn)).catch(()=>{const ta=document.createElement('textarea');ta.value=code;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);flash(btn)})}
+function flash(btn){const o=btn.innerHTML;btn.classList.add('flash');btn.innerHTML='<span class="iconify" data-icon="lucide:check"></span> Copied!';setTimeout(()=>{btn.classList.remove('flash');btn.innerHTML=o},1500)}
 
 // ═══════════════ GITHUB STATS ═══════════════
-async function fetchGH() {
-  try {
-    const d = await (await fetch('https://api.github.com/users/Taoslogos')).json();
-    if (d.public_repos !== undefined) aniN(document.getElementById('ghRepos'), d.public_repos);
-    const rr = await (await fetch('https://api.github.com/users/Taoslogos/repos?per_page=100')).json();
-    let s = 0, f = 0; rr.forEach(r => { s += r.stargazers_count || 0; f += r.forks_count || 0; });
-    aniN(document.getElementById('ghStars'), s); aniN(document.getElementById('ghForks'), f);
-  } catch(e) { ['ghRepos','ghStars','ghForks'].forEach(id => document.getElementById(id).textContent = '—'); }
-}
-function aniN(el, t) { const s = performance.now(); (function k(n) { const p = Math.min((n-s)/1200,1); el.textContent = Math.round(t*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(k); })(s); }
-fetchGH(); setInterval(fetchGH, 60000);
+async function fGH(){try{const d=await(await fetch('https://api.github.com/users/Taoslogos')).json();if(d.public_repos!==undefined)aN(document.getElementById('ghR'),d.public_repos);const rr=await(await fetch('https://api.github.com/users/Taoslogos/repos?per_page=100')).json();let s=0,f=0;rr.forEach(r=>{s+=r.stargazers_count||0;f+=r.forks_count||0});aN(document.getElementById('ghS'),s);aN(document.getElementById('ghF'),f)}catch(e){['ghR','ghS','ghF'].forEach(id=>document.getElementById(id).textContent='—')}}
+function aN(el,t){const s=performance.now();(function k(n){const p=Math.min((n-s)/1200,1);el.textContent=Math.round(t*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(k)})(s)}
+fGH();setInterval(fGH,60000);
 
-// ═══════════════ MARKDOWN BLOG POSTS FROM GITHUB ═══════════════
-const POSTS_DIR = 'https://raw.githubusercontent.com/Taoslogos/Taoslogos.github.io/main/posts/';
-let allPosts = [];
+// ═══════════════ RENDER POSTS ═══════════════
+function fDate(d){try{return new Date(d).toLocaleDateString('en-US',{month:'short',year:'numeric'})}catch(e){return d}}
+function rTime(c){const w=c.replace(/[#*`\[\]()]/g,'').split(/\s+/).length;return Math.max(1,Math.round(w/200))}
 
-// Configure marked
-if (typeof marked !== 'undefined') {
-  marked.setOptions({
-    breaks: true,
-    gfm: true,
-    headerIds: false,
-    mangle: false
-  });
-}
+function renderPosts(){
+  const sorted=[...POSTS].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const feat=sorted[0],rest=sorted.slice(1);
 
-async function loadPosts() {
-  const loading = document.getElementById('postsLoading');
-  const featuredSlot = document.getElementById('featuredSlot');
-  const grid = document.getElementById('postsGrid');
-
-  // List of known posts — update this when you add new .md files
-  const postSlugs = [
-    'what-i-learned-ai',
-    'student-platform-react',
-    'offline-gpa-calculator',
-    'engineering-thinking-security',
-    'google-sheets-backend',
-    'bjt-biasing-circuits'
-  ];
-
-  let loaded = 0;
-  for (const slug of postSlugs) {
-    try {
-      const res = await fetch(POSTS_DIR + slug + '.md');
-      if (!res.ok) { loaded++; continue; }
-      const raw = await res.text();
-      const post = parseFrontmatter(raw, slug);
-      if (post) allPosts.push(post);
-    } catch(e) { /* skip */ }
-    loaded++;
-  }
-
-  // Remove loading
-  loading.style.display = 'none';
-
-  // Sort by date (newest first)
-  allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  // Render
-  if (allPosts.length === 0) {
-    grid.innerHTML = '<p style="color:var(--text-tertiary);grid-column:1/-1;text-align:center;padding:40px;">No posts yet. Add your first <code style="font-family:JetBrains Mono,monospace;background:var(--bg-code);padding:2px 8px;border-radius:6px;color:var(--accent-light);">.md</code> file to the <code style="font-family:JetBrains Mono,monospace;background:var(--bg-code);padding:2px 8px;border-radius:6px;color:var(--accent-light);">posts/</code> folder!</p>';
-    return;
-  }
-
-  // Featured = first post
-  const featured = allPosts[0];
-  featuredSlot.innerHTML = `
-    <div class="featured-card reveal" onclick="openDynamicPost(0)">
-      <div class="featured-card-img-wrap">
-        <img src="${featured.image || 'https://picsum.photos/seed/' + featured.slug + '/800/600.jpg'}" alt="${featured.title}" class="featured-card-img">
-      </div>
+  document.getElementById('featuredSlot').innerHTML=`
+    <div class="featured-card reveal" onclick="openPost(0)">
+      <div class="featured-card-img-wrap"><img src="${feat.image}" alt="${feat.title}" class="featured-card-img"></div>
       <div class="featured-card-body">
         <div class="featured-label">Featured Post</div>
-        <h3 class="featured-card-title">${featured.title}</h3>
-        <p class="featured-card-excerpt">${featured.excerpt}</p>
-        <div style="display:flex;align-items:center;gap:12px;color:var(--text-tertiary);font-size:12px;">
-          <span>${formatDate(featured.date)}</span><span>·</span><span>${estimateReadTime(featured.content)} min read</span><span style="color:var(--accent);">→</span>
-        </div>
+        <h3 class="featured-card-title">${feat.title}</h3>
+        <p class="featured-card-excerpt">${feat.excerpt}</p>
+        <div style="display:flex;align-items:center;gap:12px;color:var(--t3);font-size:12px"><span>${fDate(feat.date)}</span><span>·</span><span>${rTime(feat.content)} min read</span><span style="color:var(--ac)">→</span></div>
       </div>
     </div>`;
 
-  // Rest = grid cards
-  const rest = allPosts.slice(1);
-  grid.innerHTML = rest.map((post, i) => `
-    <div class="article-card reveal delay-${Math.min((i+1)*100, 500)}" onclick="openDynamicPost(${i + 1})">
-      <div class="article-card-img-wrap">
-        <img src="${post.image || 'https://picsum.photos/seed/' + post.slug + '/600/400.jpg'}" alt="${post.title}" class="article-card-img">
-      </div>
+  document.getElementById('postsGrid').innerHTML=rest.map((p,i)=>`
+    <div class="article-card reveal d${Math.min((i+1),5)}" onclick="openPost(${i+1})">
+      <div class="article-card-img-wrap"><img src="${p.image}" alt="${p.title}" class="article-card-img"></div>
       <div class="article-card-body">
-        <div class="article-card-tags">${post.tags.map(t => `<span class="article-card-tag">${t}</span>`).join('')}</div>
-        <h3 class="article-card-title">${post.title}</h3>
-        <p class="article-card-excerpt">${post.excerpt}</p>
+        <div class="article-card-tags">${p.tags.map(t=>`<span class="article-card-tag">${t}</span>`).join('')}</div>
+        <h3 class="article-card-title">${p.title}</h3>
+        <p class="article-card-excerpt">${p.excerpt}</p>
         <div class="article-card-meta">
-          <span>${formatDate(post.date)}</span>
-          <span class="read-time"><span class="iconify" data-icon="lucide:clock" style="font-size:12px;"></span> ${estimateReadTime(post.content)} min</span>
-          <span class="article-card-arrow"><span class="iconify" data-icon="lucide:arrow-right" style="font-size:14px;"></span></span>
+          <span>${fDate(p.date)}</span>
+          <span class="rt"><span class="iconify" data-icon="lucide:clock" style="font-size:12px"></span> ${rTime(p.content)} min</span>
+          <span class="article-card-arrow"><span class="iconify" data-icon="lucide:arrow-right" style="font-size:14px"></span></span>
         </div>
       </div>
     </div>`).join('');
 
-  // Re-observe reveals
-  document.querySelectorAll('.reveal:not(.active)').forEach(el => ro.observe(el));
+  document.querySelectorAll('.reveal:not(.active)').forEach(el=>ro.observe(el));
 }
 
-function parseFrontmatter(raw, slug) {
-  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  if (!match) return null;
-  const fm = match[1], content = match[2];
-  const meta = {};
-  fm.split('\n').forEach(line => {
-    const m = line.match(/^(\w+)\s*:\s*(.+)$/);
-    if (m) {
-      let val = m[2].trim();
-      if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
-      if (val.startsWith('[') && val.endsWith(']')) {
-        val = val.slice(1, -1).split(',').map(s => s.trim().replace(/^"|"$/g, ''));
-      }
-      meta[m[1]] = val;
-    }
-  });
-  return {
-    slug, title: meta.title || 'Untitled', date: meta.date || '2025-01-01',
-    tags: Array.isArray(meta.tags) ? meta.tags : [],
-    image: meta.image || '', excerpt: meta.excerpt || '',
-    content
-  };
-}
-
-function formatDate(d) {
-  try { return new Date(d).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }); }
-  catch(e) { return d; }
-}
-
-function estimateReadTime(content) {
-  const words = content.replace(/[#*`\[\]()]/g, '').split(/\s+/).length;
-  return Math.max(1, Math.round(words / 200));
-}
-
-function openDynamicPost(index) {
-  const post = allPosts[index];
-  if (!post) return;
-  document.getElementById('blogView').style.display = 'none';
-  document.getElementById('dynamicTags').innerHTML = post.tags.map(t => `<span class="article-card-tag">${t}</span>`).join('');
-  document.getElementById('dynamicTitle').textContent = post.title;
-  document.getElementById('dynamicMeta').innerHTML = `
-    <span>${formatDate(post.date)}</span><span>·</span>
-    <span>${estimateReadTime(post.content)} min read</span>`;
-  const html = typeof marked !== 'undefined' ? marked.parse(post.content) : post.content.replace(/\n/g, '<br>');
-  document.getElementById('dynamicContent').innerHTML = html;
+function openPost(i){
+  const sorted=[...POSTS].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const p=sorted[i];if(!p)return;
+  document.getElementById('blogView').style.display='none';
+  document.getElementById('dTags').innerHTML=p.tags.map(t=>`<span class="article-card-tag">${t}</span>`).join('');
+  document.getElementById('dTitle').textContent=p.title;
+  document.getElementById('dMeta').innerHTML=`<span>${fDate(p.date)}</span><span>·</span><span>${rTime(p.content)} min read</span>`;
+  const html=typeof marked!=='undefined'?marked.parse(p.content):p.content.replace(/\n/g,'<br>');
+  document.getElementById('dContent').innerHTML=html;
   document.getElementById('articleDynamic').classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'instant' });
-
-  // Add copy buttons to all code blocks generated by marked
-  setTimeout(addCopyButtonsToGenerated, 100);
+  window.scrollTo({top:0,behavior:'instant'});
+  setTimeout(addCopyBtns,100);
 }
 
-function addCopyButtonsToGenerated() {
-  document.querySelectorAll('#dynamicContent pre').forEach(pre => {
-    if (pre.querySelector('.copy-btn')) return;
-    const btn = document.createElement('button');
-    btn.className = 'copy-btn';
-    btn.style.position = 'absolute';
-    btn.style.top = '8px';
-    btn.style.right = '8px';
-    btn.innerHTML = '<span class="iconify" data-icon="lucide:copy"></span> Copy';
-    btn.onclick = function(e) {
-      e.stopPropagation();
-      const code = pre.querySelector('code') ? pre.querySelector('code').textContent : pre.textContent;
-      navigator.clipboard.writeText(code).then(() => flash(btn)).catch(() => flash(btn));
-    };
-    pre.style.position = 'relative';
+function addCopyBtns(){
+  document.querySelectorAll('#dContent pre').forEach(pre=>{
+    if(pre.querySelector('.copy-btn'))return;
+    const btn=document.createElement('button');btn.className='copy-btn';
+    btn.innerHTML='<span class="iconify" data-icon="lucide:copy"></span> Copy';
+    btn.onclick=function(e){e.stopPropagation();copyCode(this)};
     pre.appendChild(btn);
   });
 }
 
-function showBlog() {
+function showBlog(){
   document.getElementById('articleDynamic').classList.remove('active');
-  document.getElementById('blogView').style.display = 'block';
+  document.getElementById('blogView').style.display='block';
 }
 
 // ═══════════════ REVEAL ═══════════════
-const ro = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('active')})},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
 // ═══════════════ TOAST ═══════════════
-let tt;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.innerHTML = '<span class="iconify" data-icon="lucide:check-circle" style="font-size:16px;"></span> ' + msg;
-  t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2000);
-}
+let tt;function showToast(m){const t=document.getElementById('toast');t.innerHTML='<span class="iconify" data-icon="lucide:check-circle" style="font-size:16px"></span> '+m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2000)}
 
 // ═══════════════ MOBILE NAV ═══════════════
-document.getElementById('mobileNavBtn').addEventListener('click', () => {
-  document.getElementById('mobileOverlay').classList.add('open');
-  document.getElementById('mobilePanel').classList.add('open');
-});
-function closeMobileNav() {
-  document.getElementById('mobileOverlay').classList.remove('open');
-  document.getElementById('mobilePanel').classList.remove('open');
-}
-document.getElementById('mobileOverlay').addEventListener('click', closeMobileNav);
+document.getElementById('mobBtn').addEventListener('click',()=>{document.getElementById('mobOv').classList.add('open');document.getElementById('mobPan').classList.add('open')});
+function closeMob(){document.getElementById('mobOv').classList.remove('open');document.getElementById('mobPan').classList.remove('open')}
+document.getElementById('mobOv').addEventListener('click',closeMob);
 
 // ═══════════════ INIT ═══════════════
-loadPosts();
+if(typeof marked!=='undefined'){marked.setOptions({breaks:true,gfm:true,headerIds:false,mangle:false})}
+renderPosts();
 </script>
 </body>
 </html>
