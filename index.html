@@ -584,15 +584,14 @@ You calculate the Q-point, verify it's in the active region, move on. But then y
 This is why I keep building things instead of just reading about them. The textbook teaches you the model. Building it teaches you where the model breaks — and that's where the real learning happens.`
 },
   // - post 7
- {
-slug: "voiceoverpro-storage-challenges",
-title: "The Friction of Building: Solving Storage in VoiceoverPro",
-date: "2026-07-16",
-tags: ["React-Native", "Development", "Storage", "Learning"],
-image: "[https://picsum.photos/seed/voiceoverpro2026/800/600.jpg](https://www.google.com/search?q=https://picsum.photos/seed/voiceoverpro2026/800/600.jpg)",
-excerpt: "Building an app is one thing; getting it to actually save files to a user's device in the age of scoped storage is a whole other battle.",
-content: `Building an app is one thing; getting it to actually save files to a user's device in the age of scoped storage is a whole other battle. My latest project, VoiceoverPro, is designed to help users capture and enhance audio, but I hit a wall when I tried to implement the "Save" feature in React Native.
-
+{
+  slug: "voiceoverpro-storage-challenges",
+  title: "The Friction of Building: Solving Storage in VoiceoverPro",
+  date: "2026-07-16",
+  tags: ["React-Native", "Development", "Storage", "Learning"],
+  image: "https://picsum.photos/seed/voiceoverpro2026/800/600.jpg",
+  excerpt: "Building an app is one thing; getting it to actually save files to a user's device in the age of scoped storage is a whole other battle.",
+  content: `Building an app is one thing; getting it to actually save files to a user's device in the age of scoped storage is a whole other battle. My latest project, VoiceoverPro, is designed to help users capture and enhance audio, but I hit a wall when I tried to implement the "Save" feature in React Native.
 
 ## The Problem: When "Save" Doesn't Save
 
@@ -600,9 +599,9 @@ I thought I had it handled. I implemented standard file-writing logic, but inste
 
 ## The Lessons Learned
 
-* **The Sandbox Constraint:** I realized that in React Native, attempting to write directly to external paths often fails because the OS restricts access. I had to learn to work within the `DocumentDir` provided by the file system libraries.
+* **The Sandbox Constraint:** I realized that in React Native, attempting to write directly to external paths often fails because the OS restricts access. I had to learn to work within the \`DocumentDir\` provided by the file system libraries.
 * **Permissions are Not Enough:** Simply adding permissions to the Android Manifest wasn't the fix. I had to ensure I was using the correct API methods that are compatible with the current Android storage model.
-* **Library Selection:** Relying on robust libraries like `react-native-blob-util` made the difference between constant crashes and a smooth, cross-platform file saving experience.
+* **Library Selection:** Relying on robust libraries like \`react-native-blob-util\` made the difference between constant crashes and a smooth, cross-platform file saving experience.
 
 ## The Takeaway
 
