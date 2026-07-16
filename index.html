@@ -209,8 +209,8 @@
     <a href="#" class="nav-logo" onclick="showBlog();return false"><span class="dot"></span> taos.dev</a>
     <ul class="nav-links">
       <li><a href="#" onclick="showBlog();return false">Blog</a></li>
-      <li><a href="#learning-section">Learning</a></li>
-      <li><a href="#skills-section">Skills</a></li>
+      <li><a href="#learning-section" onclick="showBlog()">Learning</a></li>
+      <li><a href="#skills-section" onclick="showBlog()">Skills</a></li>
       <li><a href="https://github.com/Taoslogos" target="_blank">GitHub</a></li>
     </ul>
     <div class="nav-right">
@@ -225,8 +225,8 @@
 <div class="mobile-nav-overlay" id="mobOv"></div>
 <div class="mobile-nav-panel" id="mobPan">
   <a href="#" onclick="showBlog();closeMob();return false">Blog</a>
-  <a href="#learning-section" onclick="closeMob()">Learning</a>
-  <a href="#skills-section" onclick="closeMob()">Skills</a>
+  <a href="#learning-section" onclick="showBlog();closeMob()">Learning</a>
+  <a href="#skills-section" onclick="showBlog();closeMob()">Skills</a>
   <a href="https://github.com/Taoslogos" target="_blank">GitHub</a>
 </div>
 
@@ -321,17 +321,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-/* ═══════════════════════════════════════════════════
-   ALL POSTS ARE EMBEDDED HERE — NO EXTERNAL FETCHING
-   To edit a post: find it below, change the text,
-   then commit on GitHub. To add a new post: copy
-   one block, change the slug/title/date/tags/content,
-   and it appears automatically!
-   ═══════════════════════════════════════════════════ */
-
 const POSTS = [
-
-// ─── POST 1 ───
 {
   slug: "what-i-learned-ai",
   title: "What I Actually Learned After 6 Months of Exploring AI",
@@ -382,8 +372,6 @@ AI is an incredible tool for curiosity-driven learning — if you already know e
 
 I'm going deeper in 2026 — exploring local models, fine-tuning, and actually understanding what happens inside the neural network. The curiosity isn't slowing down.`
 },
-
-// ─── POST 2 ───
 {
   slug: "student-platform-react",
   title: "Building a Student Platform to Solve a Real Problem",
@@ -434,8 +422,6 @@ const validateRow = (row, schema) => {
 
 The best technical decision we made was choosing the simplest architecture that could work. We didn't need a database. We needed to ship something that solved a problem for 200 people. Every hour spent on infrastructure would have been an hour not spent making the app actually useful.`
 },
-
-// ─── POST 3 ───
 {
   slug: "offline-gpa-calculator",
   title: "Offline GPA Calculator: Why I Tested 50+ Edge Cases",
@@ -479,8 +465,6 @@ Flutter's type system caught three null-safety bugs during development that woul
 
 The 120+ test cases I wrote gave me confidence to ship — not because the code was perfect, but because I knew exactly where its limits were.`
 },
-
-// ─── POST 4 ───
 {
   slug: "engineering-thinking-security",
   title: "How Engineering Thinking Made Me Better at Security",
@@ -519,8 +503,6 @@ How much security thinking improved my regular code. After studying injection at
 
 Defensive coding and defensive engineering are the same habit. The more I learn about security, the better engineer I become — and vice versa.`
 },
-
-// ─── POST 5 ───
 {
   slug: "google-sheets-backend",
   title: "Google Sheets as a Backend: Choosing the Right Tool",
@@ -558,8 +540,6 @@ Google Sheets gives you version history for free, non-technical staff can update
 
 The biggest lesson wasn't technical at all — it was learning to ask "what do these people actually need?" before asking "what technology should I use?" That one habit has changed how I approach every project since.`
 },
-
-// ─── POST 6 ───
 {
   slug: "bjt-biasing-circuits",
   title: "BJT Biasing Circuits: What My Textbook Didn't Explain",
@@ -573,7 +553,7 @@ The biggest lesson wasn't technical at all — it was learning to ask "what do t
 
 You calculate the Q-point, verify it's in the active region, move on. But then you build the circuit and the output is clipped. Why? Because the textbook assumed ideal resistors and room temperature. Real 5% tolerance resistors shifted my Q-point enough to clip on one side. A 10°C temperature rise made it worse.
 
-## What I Had to Learn Myself
+## What I Had to Learn Yourself
 
 - **Resistor tolerance matters** — A 5% resistor on R1 and R2 in a voltage divider doesn't just shift the bias — it can push the transistor out of the active region entirely
 - **Thermal stability isn't theoretical** — Without proper emitter degeneration, a BJT circuit that works at 25°C can fail at 45°C
@@ -582,24 +562,8 @@ You calculate the Q-point, verify it's in the active region, move on. But then y
 ## Why I Keep Building
 
 This is why I keep building things instead of just reading about them. The textbook teaches you the model. Building it teaches you where the model breaks — and that's where the real learning happens.`
-},
-/* ═══════════════════════════════════════════════
-   TO ADD A NEW POST:
-   Copy any block above, paste it here before
-   the closing ]; and change:
-   - slug: unique-lowercase-with-hyphens
-   - title: "Your New Post Title"
-   - date: "2026-03-15"
-   - tags: ["Tag1", "Tag2"]
-   - image: "https://picsum.photos/seed/YOURSEED/800/600.jpg"
-   - excerpt: "Short card description."
-   - content: `Your full post in Markdown...`
-   ═══════════════════════════════════════════════ */
-
+}
 ];
-
-/* ═══════════════ END OF POSTS ═══════════════ */
-
 
 // ═══════════════ TYPEWRITER ═══════════════
 const phrases=["I'm endlessly curious.","I learn something new every day.","I build to solve real problems.","I explore AI, security, code.","I turn questions into projects."];
@@ -613,15 +577,36 @@ window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHei
 
 // ═══════════════ THEME TOGGLE ═══════════════
 const TH=['dark','light','terminal'],TI=['lucide:moon','lucide:sun','lucide:terminal'];
-let tI=0;const tT=document.getElementById('themeToggle'),tIc=document.getElementById('ticon'),tW=document.getElementById('tiw');
-tT.addEventListener('click',()=>{tW.classList.remove('on');tW.classList.add('out');setTimeout(()=>{tI=(tI+1)%TH.length;document.documentElement.setAttribute('data-theme',TH[tI]);tIc.setAttribute('data-icon',TI[tI]);tW.classList.remove('out');tW.classList.add('in');void tW.offsetWidth;tW.classList.remove('in');tW.classList.add('on');showToast('Theme: '+TH[tI].charAt(0).toUpperCase()+TH[tI].slice(1))},250)});
+let tI = TH.indexOf(localStorage.getItem('theme')) !== -1 ? TH.indexOf(localStorage.getItem('theme')) : 0;
+const tT=document.getElementById('themeToggle'),tIc=document.getElementById('ticon'),tW=document.getElementById('tiw');
+
+// Initialize Saved Theme
+document.documentElement.setAttribute('data-theme', TH[tI]);
+tIc.setAttribute('data-icon', TI[tI]);
+
+tT.addEventListener('click',()=>{
+  tW.classList.remove('on');
+  tW.classList.add('out');
+  setTimeout(()=>{
+    tI=(tI+1)%TH.length;
+    document.documentElement.setAttribute('data-theme',TH[tI]);
+    localStorage.setItem('theme', TH[tI]);
+    tIc.setAttribute('data-icon',TI[tI]);
+    tW.classList.remove('out');
+    tW.classList.add('in');
+    void tW.offsetWidth;
+    tW.classList.remove('in');
+    tW.classList.add('on');
+    showToast('Theme: '+TH[tI].charAt(0).toUpperCase()+TH[tI].slice(1))
+  },250)
+});
 
 // ═══════════════ COPY CODE ═══════════════
 function copyCode(btn){const pre=btn.closest('pre')||btn.parentElement;const code=pre.querySelector('code')?pre.querySelector('code').textContent:pre.textContent;navigator.clipboard.writeText(code).then(()=>flash(btn)).catch(()=>{const ta=document.createElement('textarea');ta.value=code;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);flash(btn)})}
 function flash(btn){const o=btn.innerHTML;btn.classList.add('flash');btn.innerHTML='<span class="iconify" data-icon="lucide:check"></span> Copied!';setTimeout(()=>{btn.classList.remove('flash');btn.innerHTML=o},1500)}
 
 // ═══════════════ GITHUB STATS ═══════════════
-async function fGH(){try{const d=await(await fetch('https://api.github.com/users/Taoslogos')).json();if(d.public_repos!==undefined)aN(document.getElementById('ghR'),d.public_repos);const rr=await(await fetch('https://api.github.com/users/Taoslogos/repos?per_page=100')).json();let s=0,f=0;rr.forEach(r=>{s+=r.stargazers_count||0;f+=r.forks_count||0});aN(document.getElementById('ghS'),s);aN(document.getElementById('ghF'),f)}catch(e){['ghR','ghS','ghF'].forEach(id=>document.getElementById(id).textContent='—')}}
+async function fGH(){try{const d=await(await fetch('https://api.github.com/users/Taoslogos')).json();if(d.public_repos!==undefined)aN(document.getElementById('ghR'),d.public_repos);const rr=await(await fetch('https://api.github.com/users/Taoslogos/repos?per_page=100')).json();let s=0,f=0;if(Array.isArray(rr)){rr.forEach(r=>{s+=r.stargazers_count||0;f+=r.forks_count||0});aN(document.getElementById('ghS'),s);aN(document.getElementById('ghF'),f)}}catch(e){['ghR','ghS','ghF'].forEach(id=>document.getElementById(id).textContent='—')}}
 function aN(el,t){const s=performance.now();(function k(n){const p=Math.min((n-s)/1200,1);el.textContent=Math.round(t*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(k)})(s)}
 fGH();setInterval(fGH,60000);
 
@@ -669,7 +654,19 @@ function openPost(i){
   document.getElementById('dTags').innerHTML=p.tags.map(t=>`<span class="article-card-tag">${t}</span>`).join('');
   document.getElementById('dTitle').textContent=p.title;
   document.getElementById('dMeta').innerHTML=`<span>${fDate(p.date)}</span><span>·</span><span>${rTime(p.content)} min read</span>`;
-  const html=typeof marked!=='undefined'?marked.parse(p.content):p.content.replace(/\n/g,'<br>');
+  
+  // Backwards and forwards compatible parser execution
+  let html = p.content;
+  if(typeof marked !== 'undefined'){
+    if(typeof marked.parse === 'function'){
+      html = marked.parse(p.content);
+    } else if(typeof marked === 'function'){
+      html = marked(p.content);
+    }
+  } else {
+    html = p.content.replace(/\n/g, '<br>');
+  }
+  
   document.getElementById('dContent').innerHTML=html;
   document.getElementById('articleDynamic').classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
@@ -704,7 +701,14 @@ function closeMob(){document.getElementById('mobOv').classList.remove('open');do
 document.getElementById('mobOv').addEventListener('click',closeMob);
 
 // ═══════════════ INIT ═══════════════
-if(typeof marked!=='undefined'){marked.setOptions({breaks:true,gfm:true,headerIds:false,mangle:false})}
+if(typeof marked!=='undefined'){
+  // Use marked.use() where available (Standard in newer versions of Marked)
+  if(typeof marked.use === 'function'){
+    marked.use({breaks:true, gfm:true});
+  } else if(typeof marked.setOptions === 'function'){
+    marked.setOptions({breaks:true, gfm:true});
+  }
+}
 renderPosts();
 </script>
 </body>
