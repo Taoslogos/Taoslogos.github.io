@@ -593,22 +593,6 @@ image: "[https://picsum.photos/seed/voiceoverpro2026/800/600.jpg](https://www.go
 excerpt: "Building an app is one thing; getting it to actually save files to a user's device in the age of scoped storage is a whole other battle.",
 content: `Building an app is one thing; getting it to actually save files to a user's device in the age of scoped storage is a whole other battle. My latest project, VoiceoverPro, is designed to help users capture and enhance audio, but I hit a wall when I tried to implement the "Save" feature in React Native.
 
-```javascript
-// Using react-native-blob-util to handle file system operations
-import ReactNativeBlobUtil from 'react-native-blob-util';
-
-const saveEnhancedAudio = async (filePath, fileName) => {
-const dirs = ReactNativeBlobUtil.fs.dirs;
-const destinationPath = `${dirs.DocumentDir}/${fileName}`;
-
-try {
-await ReactNativeBlobUtil.fs.cp(filePath, destinationPath);
-console.log('File saved successfully to:', destinationPath);
-} catch (error) {
-console.error('Error saving file:', error);
-}
-};
-```
 
 ## The Problem: When "Save" Doesn't Save
 
